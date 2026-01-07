@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lib.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/06 20:16:32 by nclavel           #+#    #+#             */
+/*   Updated: 2026/01/07 01:30:53 by nclavel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "incs/philosophers.h"
 
 size_t	ft_strlen(char *str)
@@ -12,36 +24,36 @@ size_t	ft_strlen(char *str)
 	return (len);
 }
 
-int	ft_atoi(char *number)
+int	ft_atoi(const char *nptr)
 {
-	int nb;
-	int i;
-	int sign;
+	int	i;
+	int	res;
 
-	nb = 0;
 	i = 0;
-	sign = 1;
-	if (number < 0)
-		sign = -sign;
-	while (number[i])
+	res = 0;
+	if (!nptr || !nptr[0])
+		return (0);
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+		i++;
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		nb = nb * 10 + (number[i] - '0');
+		res = res * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return (nb);
+	return (res);
 }
 
 int	ft_atol(char *number)
 {
 	long  nb;
 	int	  i;
-	int	  sign;
 
 	nb = 0;
 	i = 0;
-	sign = 1;
-	if (number < 0)
-		sign = -sign;
+	while (number[i] == '+' || number[i] == '-')
+		i++;
 	while (number[i])
 	{
 		nb = nb * 10 + (number[i] - '0');
