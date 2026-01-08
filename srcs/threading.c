@@ -16,7 +16,7 @@
 
 void  action_philo(t_philo *philo, char type, size_t tmps)
 {
-	if (type == 'd')
+	if (type == 'd' && !*philo->dead_status)
 	{	
 		pthread_mutex_lock(&*philo->dead_lock);
 		*philo->dead_status = true;
@@ -27,6 +27,7 @@ void  action_philo(t_philo *philo, char type, size_t tmps)
 	{
 		printf("%ld %ld is eating\n", tmps, philo->number);
 		usleep(philo->time_to_eat * 1000);
+		philo->since_meal = get_mstime();
 	}
 	else if (type == 't')
 		printf("%ld %ld is thinking\n", tmps, philo->number);
@@ -42,10 +43,14 @@ void  check_philosopher(t_philo *philo)
 	size_t	tmps;
 
 	tmps = get_mstime();
-	if (philo->must_eat == philo->meal_eated)
-		action_philo(philo, 'e', tmps);
-	else if ((tmps - philo->since_meal) * 1000 >= philo->time_to_die)
+	if (tmps - philo->since_meal >= philo->time_to_die)
+	{
+		printf("[DEBUG] thread %ld dead ope = %ld >= %ld\n", philo->number, philo->since_meal - tmps, philo->time_to_die);
 		action_philo(philo, 'd', tmps);
+	}
+	else if (philo->must_eat == philo->meal_eated)
+		action_philo(philo, 'e', tmps);
+
 }
 
 void  *philosophers(void *ptr_philo)

@@ -13,7 +13,7 @@
 NAME	=	philosophers
 
 CC		=	cc
-CFLAGS	=	-I. -Wall -Wextra -Werror -g3
+CFLAGS	=	-I. -Wall -Wextra -Werror -ggdb3
 
 SRC_DIR	=	srcs
 INC_DIR	=	incs

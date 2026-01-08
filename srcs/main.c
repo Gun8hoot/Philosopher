@@ -20,9 +20,17 @@ bool  init_philo(t_shared *shared)
 	printf("[DEBUG] nb_philo : %d\n", shared->philo[0].number_philosophers);
 	if (pthread_mutex_init(&shared->stdout_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));
+	if (pthread_mutex_init(&shared->dead_lock, NULL))
+		return (failed_exit(shared, 0), mod_perror(EMTX));
 	while (i < shared->philo[0].number_philosophers)
 	{
 		shared->philo[i].number = i + 1;
+		if (shared->philo[i].number == 1)
+		{
+			shared->philo[i].fork_l = &shared->philo[shared->philo[i].number_philosophers - 1].fork_r;
+			shared->philo[i].fork_r = &shared->philo[shared->philo[i].]
+		}
+		printf("[!] Create philosophers %d\n", i + 1);
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers, &shared->philo[i]))
 		{
 			failed_exit(shared, i);
