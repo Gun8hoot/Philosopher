@@ -38,9 +38,9 @@ typedef struct s_philo
 	pthread_mutex_t		*dead_lock;
 	pthread_mutex_t		*stdout_lock;
 	pthread_mutex_t		*fork_r;
-	pthread_mutex_t		*fork_l;
+	pthread_mutex_t		fork_l;
 	pthread_t			id;
-	int					number_philosophers;
+	int					nb_max;
 	size_t				time_to_die;
 	size_t				time_to_eat;
 	size_t				time_to_sleep;
@@ -48,6 +48,9 @@ typedef struct s_philo
 	size_t				number;
 	size_t				since_meal;
 	size_t				meal_eated;
+	bool				eat_status;
+	bool				sleep_status;
+	bool				think_status;
 	bool				*dead_status;
 } t_philo;
 

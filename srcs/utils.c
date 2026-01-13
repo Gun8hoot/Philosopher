@@ -41,9 +41,9 @@ void  succes_exit(t_shared *shared)
 	int	i;
 
 	i = 0;
-	if (shared->philo[0].number_philosophers)
+	if (shared->philo[0].nb_max)
 	{
-		while (i < shared->philo->number_philosophers)
+		while (i < shared->philo->nb_max)
 		{
 			pthread_join(shared->philo[i].id, NULL);
 			i++;
@@ -62,7 +62,7 @@ void  failed_exit(t_shared *shared, int stopped_at)
 	if (stopped_at)
 		i = stopped_at - 1;
 	else 
-		i = shared->philo->number_philosophers;
+		i = shared->philo->nb_max;
 	while (j < i)
 	{
 		pthread_join(shared->philo[j].id, NULL);
