@@ -39,6 +39,7 @@ typedef struct s_philo
 {
 	struct timeval		tmsp_since;
 	pthread_mutex_t		*dead_lock;
+	pthread_mutex_t		*shut_up_lock;
 	pthread_mutex_t		*stdout_lock;
 	pthread_mutex_t		*fork_r;
 	pthread_mutex_t		fork_l;
@@ -61,6 +62,7 @@ typedef struct s_philo
 typedef	struct	s_shared
 {
 	pthread_mutex_t		stdout_lock;
+	pthread_mutex_t		shut_up_lock;
 	pthread_mutex_t		dead_lock;
 	bool				shut_up;
 	bool				dead_status;

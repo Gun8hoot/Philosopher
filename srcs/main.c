@@ -24,6 +24,8 @@ bool  init_philo(t_shared *shared)
 		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->dead_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));	
+	if (pthread_mutex_init(&shared->shut_up_lock, NULL))
+		return (failed_exit(shared, 0), mod_perror(EMTX));	
 	while (i < shared->philo[0].nb_max)
 	{
 		shared->philo[i].number = i + 1;

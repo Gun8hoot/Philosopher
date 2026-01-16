@@ -52,6 +52,7 @@ bool  philo_struct_init(t_shared *share, int argc, char **argv, int iter, int nb
 	share->philo[iter].stdout_lock = &share->stdout_lock;
 	share->philo[iter].dead_status = &share->dead_status;
 	share->philo[iter].dead_lock = &share->dead_lock;
+	share->philo[iter].shut_up_lock = &share->shut_up_lock;
 	share->philo[iter].shut_up = &share->shut_up;
 	share->philo[iter].nb_max = nb;
 	share->philo[iter].time_to_die = ft_atoi(argv[2]);

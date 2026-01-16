@@ -28,9 +28,11 @@ bool  check_die(t_philo *philo)
 	else if (philo->since_meal && get_mstime() - philo->since_meal >= philo->time_to_die)
 	{
 		pthread_mutex_lock(&*philo->dead_lock);
+		pthread_mutex_lock(&*philo->shut_up_lock);
 		*philo->dead_status = true;	
 		safe_print(philo, "died", philo->number);
 		*philo->shut_up = true;
+		pthread_mutex_unlock(&*philo->shut_up_lock);
 		printf("Take %ld ms\n", get_mstime() - philo->since_meal);
 		pthread_mutex_unlock(&*philo->dead_lock);
 		return (true);
@@ -42,7 +44,7 @@ bool  choose_fork(t_philo *philo)
 {
 	int mod;
 
-	mod = philo->number % 2;
+	mod = philo->number & 1;
 	if (check_die(philo))
 		return (false);
 	if (!mod)
@@ -89,8 +91,6 @@ void  philo_eat(t_philo *philo)
 
 void  philo_sleeping(t_philo *philo)
 {
-	if (check_die(philo))
-		return ;
 	safe_print(philo, "is sleeping", philo->number);
 	usleep(philo->time_to_sleep * 1000);
 	philo->eat_status = true;
@@ -99,8 +99,6 @@ void  philo_sleeping(t_philo *philo)
 
 void  philo_thinking(t_philo *philo)
 {
-	if (check_die(philo))
-		return ;
 	safe_print(philo, "is thinking", philo->number);
 	philo->sleep_status = true;
 	philo->think_status = false;
