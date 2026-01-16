@@ -14,12 +14,11 @@
 
 // https://rom98759.github.io/Philosophers-visualizer/
 
-bool  init_philo(t_shared *shared)
+bool  init(t_shared *shared)
 {
 	int	i;
 
 	i = 0;
-	printf("[DEBUG] nb_max_philo : %d\n", shared->philo[0].nb_max);
 	if (pthread_mutex_init(&shared->stdout_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->dead_lock, NULL))
@@ -36,7 +35,6 @@ bool  init_philo(t_shared *shared)
 		}
 		i++;
 	}
-	
 	return (true);
 }
 
@@ -48,7 +46,7 @@ int main(int argc, char **argv)
 		return (mod_perror(EARGNB));
 	if (!parsing(argc, argv, &shared))
 		return (1);
-	if (!init_philo(&shared))
+	if (!init(&shared))
 		return (1);
 	succes_exit(&shared);
 	return (0);

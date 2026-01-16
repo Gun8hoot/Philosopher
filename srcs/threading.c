@@ -14,6 +14,12 @@
 
 // https://nafuka11.github.io/philosophers-visualizer/
 
+void  case_one(t_philo *philo)
+{ 
+	safe_print(philo, "died", philo->number);
+  *philo->dead_status = true;
+}
+
 bool  check_die(t_philo *philo)
 {
 	if (*philo->dead_status)
@@ -100,6 +106,7 @@ void  philo_sleeping(t_philo *philo)
 void  philo_thinking(t_philo *philo)
 {
 	safe_print(philo, "is thinking", philo->number);
+  usleep(1000);
 	philo->sleep_status = true;
 	philo->think_status = false;
 }
@@ -110,6 +117,10 @@ void  *philosophers(void *ptr_philo)
 
 	philo = (t_philo *)ptr_philo;
 	philo->eat_status = true;
+  if (philo->number & 1)
+    usleep(1000);
+  if (philo->nb_max == 1)
+    case_one(philo);
 	while (!check_die(philo))
 	{
 		if (philo->eat_status)
@@ -118,7 +129,7 @@ void  *philosophers(void *ptr_philo)
 			philo_thinking(philo);
 		else if (philo->sleep_status)
 			philo_sleeping(philo);
-//		usleep(100);
+		usleep(100);
 	}
 	return (NULL);
 }

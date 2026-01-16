@@ -12,7 +12,7 @@
 
 #include "incs/philosophers.h"
 
-bool  forks_breakdown(t_shared *share)
+bool  forks_generation(t_shared *share)
 {
 	int	  i;
 	int	  nb_max;
@@ -46,7 +46,7 @@ bool  string_isdigit(char *number)
 	return (0);
 }
 
-bool  philo_struct_init(t_shared *share, int argc, char **argv, int iter, int nb)
+bool  init_philo(t_shared *share, int argc, char **argv, int iter, int nb)
 {
 	memset(&share->philo[iter], 0, sizeof(t_philo));
 	share->philo[iter].stdout_lock = &share->stdout_lock;
@@ -77,7 +77,7 @@ bool  init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
 		return (mod_perror(EALLOC));
 	while (iter < nb_max_philo)
 	{
-		philo_struct_init(share, argc, argv, iter, nb_max_philo);
+		init_philo(share, argc, argv, iter, nb_max_philo);
 		iter++;
 	}
 	return (true);
@@ -88,8 +88,7 @@ bool  parsing(int argc, char **argv, t_shared *shared)
 	int	i;
 
 	i = 0;
-	memset(shared, 0, 5);
-	shared->shut_up = false;
+	memset(shared, 0, sizeof(t_shared));
 	while (i < argc - 1)
 	{
 		if (string_isdigit(argv[i + 1]))
@@ -98,6 +97,6 @@ bool  parsing(int argc, char **argv, t_shared *shared)
 	}
 	if (!init_shared(shared, ft_atoi(argv[1]), argc, argv))
 		return (false);
-	forks_breakdown(shared);
+	forks_generation(shared);
 	return (true);
 }

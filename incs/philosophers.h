@@ -13,7 +13,6 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-
 // --- INCLUDES ---
 # include <pthread.h>
 # include <unistd.h>
@@ -24,7 +23,6 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-
 // --- ERROR MSG ---
 # define EALLOC "\e[0;31m[!] Failed to allocate memory\e[0m"
 # define ETHREAD "\e[0;31m[!] Failed to created every theads\e[0m"
@@ -32,7 +30,6 @@
 # define EALNUM "\e[0;31m[!] Non-number character detected\e[0m"
 # define EARGNB "\e[0;31m[!] Not enought arguments\e[0m" 
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
-
 
 // --- STRUCTURE ---
 typedef struct s_philo
@@ -68,8 +65,7 @@ typedef	struct	s_shared
 	bool				dead_status;
 
 	t_philo				*philo;
-} t_shared ;
-
+} t_shared;
 
 // --- PROTOTYPES ---
 bool	parsing(int argc, char **argv, t_shared *shared);
