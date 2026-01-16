@@ -61,7 +61,6 @@ typedef struct s_philo
 typedef	struct	s_shared
 {
 	pthread_mutex_t		stdout_lock;
-	pthread_mutex_t		mtx_fork;
 	pthread_mutex_t		dead_lock;
 	bool				shut_up;
 	bool				dead_status;

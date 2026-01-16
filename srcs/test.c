@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	size_t	t1, t2;
 
 	t1 = get_mstime();
-	usleep(2000 * 1000);
+	usleep(400 * 1000);
 	t2 = get_mstime();
-	printf("t1 = %ld\nt2 = %ld\nope = %ld\n", t1, t2, t2 - t1);
+//	printf("t1 = %ld\nt2 = %ld\nope = %ld\n", t1, t2, t2 - t1);
 }
