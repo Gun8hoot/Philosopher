@@ -12,7 +12,7 @@
 
 #include "incs/philosophers.h"
 
-
+// https://rom98759.github.io/Philosophers-visualizer/
 
 bool  init_philo(t_shared *shared)
 {
@@ -23,12 +23,10 @@ bool  init_philo(t_shared *shared)
 	if (pthread_mutex_init(&shared->stdout_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->dead_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));
+		return (failed_exit(shared, 0), mod_perror(EMTX));	
 	while (i < shared->philo[0].nb_max)
 	{
 		shared->philo[i].number = i + 1;
-		printf("[!] Create philosophers %d\n", i + 1);
-
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers, &shared->philo[i]))
 		{
 			failed_exit(shared, i);

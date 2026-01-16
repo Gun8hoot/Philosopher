@@ -12,36 +12,78 @@
 
 #include "incs/philosophers.h"
 
-void  action_philo(t_philo *philo, char type, size_t tmps)
+void  safe_print(t_philo *philo, char *str, size_t number)
 {
-	if (type == 'd' && !*philo->dead_status)
+	pthread_mutex_lock(&*philo->stdout_lock);
+	if (*philo->shut_up)
 	{	
+		pthread_mutex_unlock(&*philo->stdout_lock);
+		return ;
+	}
+	printf("%ld %ld %s\n", get_mstime(), number, str);
+	pthread_mutex_unlock(&*philo->stdout_lock);
+}
+
+bool  check_die(t_philo *philo)
+{
+	if (*philo->dead_status)
+		return (false);
+	if (philo->since_meal > 0 && (philo->meal_eated == philo->must_eat || get_mstime() - philo->since_meal >= philo->time_to_die))
+	{
 		pthread_mutex_lock(&*philo->dead_lock);
 		*philo->dead_status = true;
-		printf("%ld %ld died\n", tmps, philo->number);
+		safe_print(philo, "died", philo->number);
+		*philo->shut_up = true;
 		pthread_mutex_unlock(&*philo->dead_lock);
+		return (false);
 	}
-	else if (type == 'e')
+	return (true);
+}
+
+bool  philo_eat(t_philo *philo)
+{
+	if (!check_die(philo))
+		return (false);
+	pthread_mutex_lock(&*philo->fork_r);
+	safe_print(philo, "has taken a fork", philo->number);
+	if (!check_die(philo))
 	{
-		pthread_mutex_lock(&*philo->fork_r);
-		pthread_mutex_lock(&philo->fork_l);
-		printf("%ld %ld is eating\n", tmps, philo->number);
-		usleep(philo->time_to_eat * 1000);
-		philo->since_meal = get_mstime();
-		philo->think_status = true;
-		philo->eat_status = false;
+		pthread_mutex_unlock(&*philo->fork_r);
+		return (false);
+	}
+	pthread_mutex_lock(&philo->fork_l);
+	safe_print(philo, "has taken a fork", philo->number);
+	if (!check_die(philo))
+	{
 		pthread_mutex_unlock(&*philo->fork_r);
 		pthread_mutex_unlock(&philo->fork_l);
+		return (false);
 	}
+	safe_print(philo, "is eating", philo->number);
+	usleep(philo->time_to_eat * 1000);
+	philo->since_meal = get_mstime();
+	philo->think_status = true;
+	philo->eat_status = false;
+	pthread_mutex_unlock(&*philo->fork_r);
+	pthread_mutex_unlock(&philo->fork_l);
+	return (true);
+}
+
+void  action_philo(t_philo *philo, char type)
+{
+	if (type == 'e')
+		philo_eat(philo);
 	else if (type == 't')
 	{
-		printf("%ld %ld is thinking\n", tmps, philo->number);
+		check_die(philo);
+		safe_print(philo, "is thinking", philo->number);
 		philo->sleep_status = true;
 		philo->think_status = false;
 	}
 	else if (type == 's')
 	{
-		printf("%ld %ld is sleeping\n", tmps, philo->number);
+		check_die(philo);
+		safe_print(philo, "is sleeping", philo->number);
 		usleep(philo->time_to_sleep * 1000);
 		philo->eat_status = true;
 		philo->sleep_status = false;
@@ -51,21 +93,17 @@ void  action_philo(t_philo *philo, char type, size_t tmps)
 void  *philosophers(void *ptr_philo)
 {
 	t_philo	*philo;
-	size_t	tmps;
 
 	philo = (t_philo *)ptr_philo;
 	philo->eat_status = true;
-	while (!*philo->dead_status)
+	while (check_die(philo))
 	{
-		tmps = get_mstime();
-		if (philo->since_meal != 0 && tmps - philo->since_meal >= philo->time_to_die)
-			action_philo(philo, 'd', tmps);
-		else if (philo->eat_status)
-			action_philo(philo, 'e', tmps);
+		if (philo->eat_status)
+			action_philo(philo, 'e');
 		else if (philo->think_status)
-			action_philo(philo, 't', tmps);
+			action_philo(philo, 't');
 		else if (philo->sleep_status)
-			action_philo(philo, 's', tmps);
+			action_philo(philo, 's');
 	}
 	return (NULL);
 }

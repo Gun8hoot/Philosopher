@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 20:16:37 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/13 08:32:08 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/01/16 08:41:41 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 void  forks_breakdown(t_shared *share)
 {
 	int	  i;
+	int	  nb_max;
 
+	nb_max = share->philo[0].nb_max;
 	i = 0;
-	while (i < share->philo[0].nb_max)
+	while (i < nb_max)
 	{
 		if (i == 0)
-			share->philo[i].fork_r = &share->philo[share->philo[i].nb_max - 1].fork_l;
+			share->philo[i].fork_r = &share->philo[nb_max - 1].fork_l;
 		else
 			share->philo[i].fork_r = &share->philo[i - 1].fork_l;
 		i++;
@@ -41,29 +43,38 @@ bool  string_isdigit(char *number)
 	return (0);
 }
 
-bool  put_in_struct(t_shared *share, int nb_max_philo, int argc, char **argv)
+bool  philo_struct_init(t_shared *share, int argc, char **argv, int iter, int nb)
 {
-	int	i;
+	memset(&share->philo[iter], 0, sizeof(t_philo));
+	share->philo[iter].stdout_lock = &share->stdout_lock;
+	share->philo[iter].dead_status = &share->dead_status;
+	share->philo[iter].dead_lock = &share->dead_lock;
+	share->philo[iter].shut_up = &share->shut_up;
+	share->philo[iter].nb_max = nb;
+	share->philo[iter].time_to_die = ft_atoi(argv[2]);
+	share->philo[iter].time_to_eat = ft_atoi(argv[3]);
+	share->philo[iter].time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		share->philo[iter].must_eat = ft_atoi(argv[5]);
+	else
+		share->philo[iter].must_eat = -1;
+	return (true);
 
-	i = 0;
+}
+
+bool  init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
+{
+	int	iter;
+
+	iter = 0;
 	share->philo = calloc(nb_max_philo, sizeof(t_philo));
+	share->dead_status = false;
 	if (!share->philo)
 		return (mod_perror(EALLOC));
-	while (i < nb_max_philo)
+	while (iter < nb_max_philo)
 	{
-		memset(&share->philo[i], 0, sizeof(t_philo));
-		share->philo[i].stdout_lock = &share->stdout_lock;
-		share->philo[i].dead_status = &share->dead_status;
-		share->philo[i].dead_lock = &share->dead_lock;
-		share->philo[i].nb_max = nb_max_philo;
-		share->philo[i].time_to_die = ft_atoi(argv[2]);
-		share->philo[i].time_to_eat = ft_atoi(argv[3]);
-		share->philo[i].time_to_sleep = ft_atoi(argv[4]);
-		if (argc == 6)
-			share->philo[i].must_eat = ft_atoi(argv[5]);
-		else
-			share->philo[i].must_eat = -1;
-		i++;
+		philo_struct_init(share, argc, argv, iter, nb_max_philo);
+		iter++;
 	}
 	return (true);
 }
@@ -74,13 +85,14 @@ bool  parsing(int argc, char **argv, t_shared *shared)
 
 	i = 0;
 	memset(shared, 0, 5);
+	shared->shut_up = false;
 	while (i < argc - 1)
 	{
 		if (string_isdigit(argv[i + 1]))
 			return (false);
 		i++;
 	}
-	if (!put_in_struct(shared, ft_atoi(argv[1]), argc, argv))
+	if (!init_shared(shared, ft_atoi(argv[1]), argc, argv))
 		return (false);
 	forks_breakdown(shared);
 	return (true);

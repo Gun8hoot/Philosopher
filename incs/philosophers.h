@@ -6,12 +6,13 @@
 /*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:25:14 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/07 18:25:18 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/01/16 08:36:38 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
+
 
 // --- INCLUDES ---
 # include <pthread.h>
@@ -23,6 +24,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
+
 // --- ERROR MSG ---
 # define EALLOC "\e[0;31m[!] Failed to allocate memory\e[0m"
 # define ETHREAD "\e[0;31m[!] Failed to created every theads\e[0m"
@@ -30,6 +32,7 @@
 # define EALNUM "\e[0;31m[!] Non-number character detected\e[0m"
 # define EARGNB "\e[0;31m[!] Not enought arguments\e[0m" 
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
+
 
 // --- STRUCTURE ---
 typedef struct s_philo
@@ -51,6 +54,7 @@ typedef struct s_philo
 	bool				eat_status;
 	bool				sleep_status;
 	bool				think_status;
+	bool				*shut_up;
 	bool				*dead_status;
 } t_philo;
 
@@ -59,13 +63,14 @@ typedef	struct	s_shared
 	pthread_mutex_t		stdout_lock;
 	pthread_mutex_t		mtx_fork;
 	pthread_mutex_t		dead_lock;
+	bool				shut_up;
 	bool				dead_status;
 
 	t_philo				*philo;
 } t_shared ;
 
-// --- PROTOTYPES ---
 
+// --- PROTOTYPES ---
 bool	parsing(int argc, char **argv, t_shared *shared);
 int		ft_atoi(const char *nptr);
 int		ft_atol(char *number);
