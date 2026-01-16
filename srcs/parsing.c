@@ -12,7 +12,7 @@
 
 #include "incs/philosophers.h"
 
-void  forks_breakdown(t_shared *share)
+bool  forks_breakdown(t_shared *share)
 {
 	int	  i;
 	int	  nb_max;
@@ -21,12 +21,15 @@ void  forks_breakdown(t_shared *share)
 	i = 0;
 	while (i < nb_max)
 	{
+		if (pthread_mutex_init(&share->philo[i].fork_l, NULL))
+			return (false);
 		if (i == 0)
 			share->philo[i].fork_r = &share->philo[nb_max - 1].fork_l;
 		else
 			share->philo[i].fork_r = &share->philo[i - 1].fork_l;
 		i++;
 	}
+	return (true);
 }
 
 bool  string_isdigit(char *number)

@@ -71,3 +71,15 @@ void  failed_exit(t_shared *shared, int stopped_at)
 	if (shared->philo)
 		free(shared->philo);
 }
+
+void  safe_print(t_philo *philo, char *str, size_t number)
+{
+	pthread_mutex_lock(&*philo->stdout_lock);
+	if (*philo->shut_up)
+	{
+		pthread_mutex_unlock(&*philo->stdout_lock);
+		return ;
+	}
+	printf("%ld %ld %s\n", get_mstime(), number, str);
+	pthread_mutex_unlock(&*philo->stdout_lock);
+}

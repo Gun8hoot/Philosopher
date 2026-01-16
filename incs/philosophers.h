@@ -79,4 +79,6 @@ void	succes_exit(t_shared *shared);
 void	failed_exit(t_shared *shared, int stopped_at);
 void	*philosophers(void *ptr_philo);
 size_t	get_mstime(void);
+void  safe_print(t_philo *philo, char *str, size_t number);
+
 #endif

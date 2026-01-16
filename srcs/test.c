@@ -25,9 +25,11 @@ size_t	get_mstime(void)
 int	main(int argc, char **argv)
 {
 	size_t	t1, t2;
+	t_philo	philo;
 
-	t1 = get_mstime();
+	philo.time_to_die = 1000;
+	philo.since_meal = get_mstime();
 	usleep(400 * 1000);
-	t2 = get_mstime();
+	printf("%ld <=> %ld\n", get_mstime() - philo.since_meal, philo.time_to_die);
 //	printf("t1 = %ld\nt2 = %ld\nope = %ld\n", t1, t2, t2 - t1);
 }
