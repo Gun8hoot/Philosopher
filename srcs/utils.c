@@ -51,6 +51,9 @@ void  succes_exit(t_shared *shared)
 	}
 	if (shared->philo)
 		free(shared->philo);
+	pthread_mutex_destroy(&shared->stdout_lock);
+	pthread_mutex_destroy(&shared->shut_up_lock);
+	pthread_mutex_destroy(&shared->dead_lock);
 }
 
 void  failed_exit(t_shared *shared, int stopped_at)
