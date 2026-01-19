@@ -73,6 +73,12 @@ void	failed_exit(t_shared *shared, int stopped_at)
 	}
 	if (shared->philo)
 		free(shared->philo);
+	j = 0;
+	while (j < i)
+	{
+		pthread_mutex_destroy(&shared->philo[j].fork_l);
+		j++;
+	}
 }
 
 void	safe_print(t_philo *philo, char *str, size_t number)
