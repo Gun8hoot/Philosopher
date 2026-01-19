@@ -45,9 +45,9 @@ void	philo_eat(t_philo *philo)
 {
 	if (!choose_fork(philo))
 		return ;
-	philo->since_meal = get_mstime();
 	safe_print(philo, "is eating", philo->number);
 	usleep(philo->time_to_eat * 1000);
+	philo->since_meal = get_mstime();
 	philo->think_status = true;
 	philo->eat_status = false;
 	philo->meal_eated++;
