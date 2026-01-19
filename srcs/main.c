@@ -14,7 +14,7 @@
 
 // https://rom98759.github.io/Philosophers-visualizer/
 
-bool  init(t_shared *shared)
+bool	init(t_shared *shared)
 {
 	int	i;
 
@@ -22,13 +22,14 @@ bool  init(t_shared *shared)
 	if (pthread_mutex_init(&shared->stdout_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->dead_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));	
+		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->shut_up_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));	
+		return (failed_exit(shared, 0), mod_perror(EMTX));
 	while (i < shared->philo[0].nb_max)
 	{
 		shared->philo[i].number = i + 1;
-		if (pthread_create(&shared->philo[i].id, NULL, &philosophers, &shared->philo[i]))
+		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
+				&shared->philo[i]))
 		{
 			failed_exit(shared, i);
 			return (mod_perror(ETHREAD));
@@ -38,7 +39,7 @@ bool  init(t_shared *shared)
 	return (true);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_shared	shared;
 

@@ -22,7 +22,8 @@ CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/main.c\
 			$(SRC_DIR)/parsing.c\
 			$(SRC_DIR)/threading.c\
-			$(SRC_DIR)/utils.c
+			$(SRC_DIR)/utils.c\
+			$(SRC_DIR)/action.c
 SRCS	=	$(CSRC:%.c=%.o)
 
 %.o: %.c

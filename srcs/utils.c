@@ -36,7 +36,7 @@ size_t	get_mstime(void)
 	return (ms);
 }
 
-void  succes_exit(t_shared *shared)
+void	succes_exit(t_shared *shared)
 {
 	int	i;
 
@@ -56,15 +56,15 @@ void  succes_exit(t_shared *shared)
 	pthread_mutex_destroy(&shared->dead_lock);
 }
 
-void  failed_exit(t_shared *shared, int stopped_at)
+void	failed_exit(t_shared *shared, int stopped_at)
 {
 	int	i;
-	int j;
+	int	j;
 
 	j = 0;
 	if (stopped_at)
 		i = stopped_at - 1;
-	else 
+	else
 		i = shared->philo->nb_max;
 	while (j < i)
 	{
@@ -75,7 +75,7 @@ void  failed_exit(t_shared *shared, int stopped_at)
 		free(shared->philo);
 }
 
-void  safe_print(t_philo *philo, char *str, size_t number)
+void	safe_print(t_philo *philo, char *str, size_t number)
 {
 	pthread_mutex_lock(&*philo->stdout_lock);
 	if (*philo->shut_up)

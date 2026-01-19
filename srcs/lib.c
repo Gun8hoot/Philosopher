@@ -14,7 +14,7 @@
 
 size_t	ft_strlen(char *str)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	if (!str)
@@ -47,8 +47,8 @@ int	ft_atoi(const char *nptr)
 
 int	ft_atol(char *number)
 {
-	long  nb;
-	int	  i;
+	long	nb;
+	int		i;
 
 	nb = 0;
 	i = 0;

@@ -14,13 +14,13 @@
 
 // https://nafuka11.github.io/philosophers-visualizer/
 
-void  case_one(t_philo *philo)
-{ 
+void	case_one(t_philo *philo)
+{
 	safe_print(philo, "died", philo->number);
-  *philo->dead_status = true;
+	*philo->dead_status = true;
 }
 
-bool  check_die(t_philo *philo)
+bool	check_die(t_philo *philo)
 {
 	if (*philo->dead_status)
 		return (true);
@@ -31,14 +31,13 @@ bool  check_die(t_philo *philo)
 		pthread_mutex_unlock(&*philo->dead_lock);
 		return (true);
 	}
-	else if (philo->since_meal && get_mstime() - philo->since_meal >= philo->time_to_die)
+	else if (philo->since_meal && get_mstime()
+		- philo->since_meal >= philo->time_to_die)
 	{
 		pthread_mutex_lock(&*philo->dead_lock);
-		pthread_mutex_lock(&*philo->shut_up_lock);
-		*philo->dead_status = true;	
-		safe_print(philo, "died", philo->number);
 		*philo->shut_up = true;
-		pthread_mutex_unlock(&*philo->shut_up_lock);
+		*philo->dead_status = true;
+		safe_print(philo, "died", philo->number);
 		printf("Take %ld ms\n", get_mstime() - philo->since_meal);
 		pthread_mutex_unlock(&*philo->dead_lock);
 		return (true);
@@ -46,81 +45,16 @@ bool  check_die(t_philo *philo)
 	return (false);
 }
 
-bool  choose_fork(t_philo *philo)
-{
-	int mod;
-
-	mod = philo->number & 1;
-	if (check_die(philo))
-		return (false);
-	if (!mod)
-		pthread_mutex_lock(&*philo->fork_r);
-	else 
-		pthread_mutex_lock(&philo->fork_l);
-	if (check_die(philo))
-	{
-		if (!mod)
-			pthread_mutex_unlock(&*philo->fork_r);
-		else 
-			pthread_mutex_unlock(&philo->fork_l);
-		return (false);
-	}
-	safe_print(philo, "has taken a fork", philo->number);
-	if (!mod)
-		pthread_mutex_lock(&philo->fork_l);
-	else 
-		pthread_mutex_lock(&*philo->fork_r);
-	if (check_die(philo))
-	{
-		pthread_mutex_unlock(&*philo->fork_r);
-		pthread_mutex_unlock(&philo->fork_l);
-		return (false);
-	}
-	safe_print(philo, "has taken a fork", philo->number);
-	return (true);
-}
-
-void  philo_eat(t_philo *philo)
-{
-	if (!choose_fork(philo))
-		return ;
-	philo->since_meal = get_mstime();
-	safe_print(philo, "is eating", philo->number);
-	usleep(philo->time_to_eat * 1000);
-	philo->think_status = true;
-	philo->eat_status = false;
-	philo->meal_eated++;
-	pthread_mutex_unlock(&*philo->fork_r);
-	pthread_mutex_unlock(&philo->fork_l);
-	return ;
-}
-
-void  philo_sleeping(t_philo *philo)
-{
-	safe_print(philo, "is sleeping", philo->number);
-	usleep(philo->time_to_sleep * 1000);
-	philo->eat_status = true;
-	philo->sleep_status = false;
-}
-
-void  philo_thinking(t_philo *philo)
-{
-	safe_print(philo, "is thinking", philo->number);
-  usleep(1000);
-	philo->sleep_status = true;
-	philo->think_status = false;
-}
-
-void  *philosophers(void *ptr_philo)
+void	*philosophers(void *ptr_philo)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
 	philo->eat_status = true;
-  if (philo->number & 1)
-    usleep(1000);
-  if (philo->nb_max == 1)
-    case_one(philo);
+	if (philo->number & 1)
+		usleep(1000);
+	if (philo->nb_max == 1)
+		case_one(philo);
 	while (!check_die(philo))
 	{
 		if (philo->eat_status)
@@ -133,4 +67,3 @@ void  *philosophers(void *ptr_philo)
 	}
 	return (NULL);
 }
-
