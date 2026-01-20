@@ -24,23 +24,6 @@ bool	check_die(t_philo *philo)
 {
 	if (*philo->dead_status)
 		return (true);
-	else if (philo->meal_eated == philo->must_eat)
-	{
-		pthread_mutex_lock(&*philo->dead_lock);
-		*philo->dead_status = true;
-		pthread_mutex_unlock(&*philo->dead_lock);
-		return (true);
-	}
-	else if (get_mstime() - philo->since_meal >= philo->time_to_die)
-	{
-		pthread_mutex_lock(&*philo->dead_lock);
-		*philo->shut_up = true;
-		*philo->dead_status = true;
-		safe_print(philo, "died", philo->number);
-		printf("Take %ld ms\n", get_mstime() - philo->since_meal);
-		pthread_mutex_unlock(&*philo->dead_lock);
-		return (true);
-	}
 	return (false);
 }
 
@@ -51,8 +34,8 @@ void	*philosophers(void *ptr_philo)
 	philo = (t_philo *)ptr_philo;
 	philo->eat_status = true;
 	if (philo->number & 1)
-		usleep(1000);
-	if (philo->nb_max == 1)
+		usleep(500);
+	if (*philo->nb_max == 1)
 		case_one(philo);
 	philo->since_meal = get_mstime();
 	while (!check_die(philo))

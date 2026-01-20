@@ -38,17 +38,18 @@ size_t	get_mstime(void)
 
 void	succes_exit(t_shared *shared)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (shared->philo[0].nb_max)
 	{
-		while (i < shared->philo->nb_max)
+		while (i < shared->data.nb_max)
 		{
 			pthread_join(shared->philo[i].id, NULL);
 			i++;
 		}
 	}
+	pthread_join(shared->id_reaper, NULL);
 	if (shared->philo)
 		free(shared->philo);
 	pthread_mutex_destroy(&shared->stdout_lock);
@@ -65,7 +66,7 @@ void	failed_exit(t_shared *shared, int stopped_at)
 	if (stopped_at)
 		i = stopped_at - 1;
 	else
-		i = shared->philo->nb_max;
+		i = shared->data.nb_max;
 	while (j < i)
 	{
 		pthread_join(shared->philo[j].id, NULL);

@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:53:06 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/13 08:32:12 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/01/20 09:06:30 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 bool	init(t_shared *shared)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (pthread_mutex_init(&shared->stdout_lock, NULL))
@@ -25,7 +25,12 @@ bool	init(t_shared *shared)
 		return (failed_exit(shared, 0), mod_perror(EMTX));
 	if (pthread_mutex_init(&shared->shut_up_lock, NULL))
 		return (failed_exit(shared, 0), mod_perror(EMTX));
-	while (i < shared->philo[0].nb_max)
+	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
+	{
+		failed_exit(shared, 1);
+		return (mod_perror(ETHREAD));
+	}
+	while (i < shared->data.nb_max)
 	{
 		shared->philo[i].number = i + 1;
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,

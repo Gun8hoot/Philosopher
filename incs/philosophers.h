@@ -32,28 +32,42 @@
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
 
 // --- STRUCTURE ---
+typedef struct s_data
+{
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			must_eat;
+	size_t			nb_max;
+}					t_data;
+
 typedef struct s_philo
 {
-	struct timeval	tmsp_since;
+	// SHARED
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*shut_up_lock;
 	pthread_mutex_t	*stdout_lock;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
-	pthread_t		id;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			must_eat;
-	size_t			number;
-	size_t			since_meal;
-	size_t			meal_eated;
-	bool			eat_status;
-	bool			sleep_status;
-	bool			think_status;
+	size_t			*time_to_die;
+	size_t			*time_to_eat;
+	size_t			*time_to_sleep;
+	size_t			*must_eat;
 	bool			*shut_up;
 	bool			*dead_status;
-	int				nb_max;
+	size_t			*nb_max;
+
+	// SELF
+	pthread_t		id;
+	size_t			number;
+	size_t			meal_eated;
+	size_t			since_meal;
+	bool			sleep_status;
+	bool			think_status;
+	bool			eat_status;
+	bool			is_eating;
+	bool			is_thinking;
+	bool			is_sleeping;
 }					t_philo;
 
 typedef struct s_shared
@@ -61,11 +75,10 @@ typedef struct s_shared
 	pthread_mutex_t	stdout_lock;
 	pthread_mutex_t	shut_up_lock;
 	pthread_mutex_t	dead_lock;
+	pthread_t		id_reaper;
 	bool			shut_up;
 	bool			dead_status;
-	int				argc;
-	char			**argv;
-
+	t_data			data;
 	t_philo			*philo;
 }					t_shared;
 
@@ -85,5 +98,6 @@ void				philo_sleeping(t_philo *philo);
 void				philo_thinking(t_philo *philo);
 void				succes_exit(t_shared *shared);
 void				philo_eat(t_philo *philo);
+void				*reaper(void *ptr_shared);
 
 #endif

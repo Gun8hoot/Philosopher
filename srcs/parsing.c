@@ -14,10 +14,10 @@
 
 bool	forks_attribution(t_shared *share)
 {
-	int	i;
-	int	nb_max;
+	size_t	i;
+	size_t	nb_max;
 
-	nb_max = share->philo[0].nb_max;
+	nb_max = share->data.nb_max;
 	i = 0;
 	while (i < nb_max)
 	{
@@ -46,7 +46,7 @@ bool	string_isdigit(char *number)
 	return (0);
 }
 
-bool	init_philo(t_shared *share, int iter, int nb)
+bool	init_philo(t_shared *share, int iter)
 {
 	memset(&share->philo[iter], 0, sizeof(t_philo));
 	share->philo[iter].stdout_lock = &share->stdout_lock;
@@ -54,34 +54,42 @@ bool	init_philo(t_shared *share, int iter, int nb)
 	share->philo[iter].dead_lock = &share->dead_lock;
 	share->philo[iter].shut_up_lock = &share->shut_up_lock;
 	share->philo[iter].shut_up = &share->shut_up;
-	share->philo[iter].nb_max = nb;
-	share->philo[iter].time_to_die = ft_atoi(share->argv[2]);
-	share->philo[iter].time_to_eat = ft_atoi(share->argv[3]);
-	share->philo[iter].time_to_sleep = ft_atoi(share->argv[4]);
-	if (share->argc == 6)
-		share->philo[iter].must_eat = ft_atoi(share->argv[5]);
-	else
-		share->philo[iter].must_eat = -1;
+	share->philo[iter].nb_max = &share->data.nb_max;
+	share->philo[iter].time_to_die = &share->data.time_to_die;
+	share->philo[iter].time_to_eat = &share->data.time_to_eat;
+	share->philo[iter].time_to_sleep = &share->data.must_eat;
+	share->philo[iter].must_eat = &share->data.must_eat;
 	return (true);
 }
 
-bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
+bool	init_shared(t_shared *share, int nb_max_philo)
 {
 	int	iter;
 
 	iter = 0;
 	share->philo = calloc(nb_max_philo, sizeof(t_philo));
-	share->argc = argc;
-	share->argv = argv;
 	if (!share->philo)
 		return (mod_perror(EALLOC));
 	share->dead_status = false;
 	while (iter < nb_max_philo)
 	{
-		init_philo(share, iter, nb_max_philo);
+		init_philo(share, iter);
 		iter++;
 	}
 	return (true);
+}
+
+void	init_data(t_data *data, int argc, char **argv)
+{
+	memset(data, 0, sizeof(t_data));
+	data->nb_max = ft_atoi(argv[1]);
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		data->must_eat = ft_atoi(argv[5]);
+	else
+		data->must_eat = -1;
 }
 
 bool	parsing(int argc, char **argv, t_shared *shared)
@@ -96,7 +104,8 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 			return (false);
 		i++;
 	}
-	if (!init_shared(shared, ft_atoi(argv[1]), argc, argv))
+	init_data(&shared->data, argc, argv);
+	if (!init_shared(shared, ft_atoi(argv[1])))
 		return (false);
 	if (!forks_attribution(shared))
 		return (false);
