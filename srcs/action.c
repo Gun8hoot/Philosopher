@@ -41,39 +41,30 @@ bool	choose_fork(t_philo *philo)
 	return (safe_print(philo, "has taken a fork", philo->number), true);
 }
 
-void	philo_eat(t_philo *philo)
+bool	philo_eat(t_philo *philo)
 {
 	if (!choose_fork(philo))
-		return ;
+		return (false);
 	safe_print(philo, "is eating", philo->number);
-	philo->is_eating = true;
-	usleep(*philo->time_to_eat * 1000);
-	philo->is_eating = false;
+	usleep(philo->time_to_eat * 1000);
+  pthread_mutex_lock(&philo->mtx_last_meal);
 	philo->since_meal = get_mstime();
-	philo->think_status = true;
-	philo->eat_status = false;
+  pthread_mutex_unlock(&philo->mtx_last_meal);
 	philo->meal_eated++;
 	pthread_mutex_unlock(&*philo->fork_r);
 	pthread_mutex_unlock(&philo->fork_l);
-	return ;
+	return (true);
 }
 
-void	philo_sleeping(t_philo *philo)
+bool	philo_sleeping(t_philo *philo)
 {
 	safe_print(philo, "is sleeping", philo->number);
-	philo->is_sleeping = true;
-	usleep(*philo->time_to_sleep * 1000);
-	philo->is_sleeping = false;
-	philo->eat_status = true;
-	philo->sleep_status = false;
+	usleep(philo->time_to_sleep * 1000);
+  return (true);
 }
 
-void	philo_thinking(t_philo *philo)
+bool	philo_thinking(t_philo *philo)
 {
 	safe_print(philo, "is thinking", philo->number);
-	philo->is_thinking = true;
-	usleep(1000);
-	philo->is_thinking = false;
-	philo->sleep_status = true;
-	philo->think_status = false;
+  return (true);
 }

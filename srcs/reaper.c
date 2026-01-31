@@ -12,15 +12,6 @@
 
 #include "incs/philosophers.h"
 
-bool  do_action(t_shared *share, size_t nb)
-{
-	if (share->philo[nb].is_eating
-		|| share->philo[nb].is_sleeping
-		|| share->philo[nb].is_thinking)
-			return (true);
-	return (false);
-}
-
 void	*reaper(void *ptr_shared)
 {
 	t_shared	*share;
@@ -34,10 +25,11 @@ void	*reaper(void *ptr_shared)
 		i = 0;
 		while (!share->dead_status && i < share->data.nb_max)
 		{
-			if (share->philo[i].meal_eated == share->data.must_eat)
+      pthread_mutex_lock(&share->philo[i].mtx_last_meal);
+			if (share->philo[i].ready && share->philo[i].meal_eated == share->data.must_eat)
 				share->dead_status = true;
-			else if (!do_action(share, i) && get_mstime()
-				- share->philo[i].since_meal >= share->data.time_to_die)
+			else if (share->philo[i].ready && get_mstime()
+				- share->philo[i].since_meal > share->data.time_to_die)
 			{
 				share->shut_up = true;
 				share->dead_status = true;
@@ -46,6 +38,7 @@ void	*reaper(void *ptr_shared)
 				printf("Take %ld ms\n", get_mstime()
 					- share->philo[i].since_meal);
 			}
+      pthread_mutex_unlock(&share->philo[i].mtx_last_meal);
 			i++;
 		}
 	}

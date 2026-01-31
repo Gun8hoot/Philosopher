@@ -49,25 +49,21 @@ typedef struct s_philo
 	pthread_mutex_t	*stdout_lock;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
-	size_t			*time_to_die;
-	size_t			*time_to_eat;
-	size_t			*time_to_sleep;
-	size_t			*must_eat;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			must_eat;
 	bool			*shut_up;
 	bool			*dead_status;
-	size_t			*nb_max;
+	size_t			nb_max;
 
 	// SELF
 	pthread_t		id;
 	size_t			number;
 	size_t			meal_eated;
 	size_t			since_meal;
-	bool			sleep_status;
-	bool			think_status;
-	bool			eat_status;
-	bool			is_eating;
-	bool			is_thinking;
-	bool			is_sleeping;
+  bool        ready;
+  pthread_mutex_t mtx_last_meal;
 }					t_philo;
 
 typedef struct s_shared
@@ -94,10 +90,10 @@ int					ft_atol(char *number);
 void				safe_print(t_philo *philo, char *str, size_t number);
 void				failed_exit(t_shared *shared, int stopped_at);
 void				*philosophers(void *ptr_philo);
-void				philo_sleeping(t_philo *philo);
-void				philo_thinking(t_philo *philo);
+bool				philo_sleeping(t_philo *philo);
+bool				philo_thinking(t_philo *philo);
 void				succes_exit(t_shared *shared);
-void				philo_eat(t_philo *philo);
+bool				philo_eat(t_philo *philo);
 void				*reaper(void *ptr_shared);
 
 #endif

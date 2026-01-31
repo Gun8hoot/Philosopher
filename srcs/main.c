@@ -19,12 +19,9 @@ bool	init(t_shared *shared)
 	size_t	i;
 
 	i = 0;
-	if (pthread_mutex_init(&shared->stdout_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));
-	if (pthread_mutex_init(&shared->dead_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));
-	if (pthread_mutex_init(&shared->shut_up_lock, NULL))
-		return (failed_exit(shared, 0), mod_perror(EMTX));
+  pthread_mutex_init(&shared->stdout_lock, NULL);
+  pthread_mutex_init(&shared->dead_lock, NULL);
+  pthread_mutex_init(&shared->shut_up_lock, NULL);
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
 	{
 		failed_exit(shared, 1);
@@ -32,6 +29,7 @@ bool	init(t_shared *shared)
 	}
 	while (i < shared->data.nb_max)
 	{
+    pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
 		shared->philo[i].number = i + 1;
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))

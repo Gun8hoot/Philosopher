@@ -16,7 +16,14 @@
 
 void	case_one(t_philo *philo)
 {
+	safe_print(philo, "has taken a fork", philo->number);
+	safe_print(philo, "has taken a fork", philo->number);
+	safe_print(philo, "is eating", philo->number);
+  usleep(philo->time_to_eat * 1000);
+  philo_thinking(philo);
+  philo_sleeping(philo);
 	safe_print(philo, "died", philo->number);
+  *philo->shut_up = true;
 	*philo->dead_status = true;
 }
 
@@ -32,21 +39,19 @@ void	*philosophers(void *ptr_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
-	philo->eat_status = true;
-	if (philo->number & 1)
-		usleep(500);
-	if (*philo->nb_max == 1)
+	if (philo->nb_max == 1)
 		case_one(philo);
-	philo->since_meal = get_mstime();
+  else
+	  philo->since_meal = get_mstime();
+  philo->ready = true;
 	while (!check_die(philo))
 	{
-		if (philo->eat_status)
-			philo_eat(philo);
-		else if (philo->think_status)
-			philo_thinking(philo);
-		else if (philo->sleep_status)
-			philo_sleeping(philo);
-		usleep(100);
+    if (!philo_eat(philo))
+      break;
+    if (!philo_thinking(philo))
+      break;
+    if (!philo_sleeping(philo))
+      break;
 	}
 	return (NULL);
 }

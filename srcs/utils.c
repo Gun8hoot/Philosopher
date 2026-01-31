@@ -49,7 +49,8 @@ void	succes_exit(t_shared *shared)
 			i++;
 		}
 	}
-	pthread_join(shared->id_reaper, NULL);
+  pthread_join(shared->id_reaper, NULL);
+
 	if (shared->philo)
 		free(shared->philo);
 	pthread_mutex_destroy(&shared->stdout_lock);
