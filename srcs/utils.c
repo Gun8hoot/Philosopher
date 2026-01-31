@@ -43,14 +43,13 @@ void	succes_exit(t_shared *shared)
 	i = 0;
 	if (shared->philo[0].nb_max)
 	{
-		while (i < shared->data.nb_max)
+		while (i < shared->philo[0].nb_max)
 		{
 			pthread_join(shared->philo[i].id, NULL);
 			i++;
 		}
 	}
-  pthread_join(shared->id_reaper, NULL);
-
+	pthread_join(shared->id_reaper, NULL);
 	if (shared->philo)
 		free(shared->philo);
 	pthread_mutex_destroy(&shared->stdout_lock);
@@ -67,7 +66,7 @@ void	failed_exit(t_shared *shared, int stopped_at)
 	if (stopped_at)
 		i = stopped_at - 1;
 	else
-		i = shared->data.nb_max;
+		i = shared->philo[0].nb_max;
 	while (j < i)
 	{
 		pthread_join(shared->philo[j].id, NULL);
@@ -91,6 +90,6 @@ void	safe_print(t_philo *philo, char *str, size_t number)
 		pthread_mutex_unlock(&*philo->stdout_lock);
 		return ;
 	}
-	printf("%ld %ld %s\n", get_mstime(), number, str);
+	printf("%ld %ld %s\n", get_mstime() - philo->start_time, number, str);
 	pthread_mutex_unlock(&*philo->stdout_lock);
 }

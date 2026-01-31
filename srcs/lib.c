@@ -45,7 +45,7 @@ int	ft_atoi(const char *nptr)
 	return (res);
 }
 
-int	ft_atol(char *number)
+long	ft_atol(char *number)
 {
 	long	nb;
 	int		i;
@@ -60,4 +60,18 @@ int	ft_atol(char *number)
 		i++;
 	}
 	return (nb);
+}
+
+bool	string_isdigit(char *number)
+{
+	int	i;
+
+	i = 0;
+	while (number[i])
+	{
+		if (!(number[i] >= '0' && number[i] <= '9'))
+			return (mod_perror(EALNUM));
+		i++;
+	}
+	return (0);
 }

@@ -12,33 +12,47 @@
 
 #include "incs/philosophers.h"
 
-// https://rom98759.github.io/Philosophers-visualizer/
+// https://nafuka11.github.io/philosophers-visualizer/
 
-bool	init(t_shared *shared)
+static bool  thread_creation(t_shared *shared, size_t start_time)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
-  pthread_mutex_init(&shared->stdout_lock, NULL);
-  pthread_mutex_init(&shared->dead_lock, NULL);
-  pthread_mutex_init(&shared->shut_up_lock, NULL);
+	while (i < shared->philo[0].nb_max)
+	{
+		pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
+		shared->philo[i].number = i + 1;
+		shared->philo[i].start_time = start_time;
+		
+		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
+				&shared->philo[i]))
+		{
+			failed_exit(shared, i);
+			return (mod_perror(ETHREAD), false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+static bool	init(t_shared *shared)
+{
+	size_t	start_time;
+
+	pthread_mutex_init(&shared->stdout_lock, NULL);
+	pthread_mutex_init(&shared->dead_lock, NULL);
+	pthread_mutex_init(&shared->shut_up_lock, NULL);
+
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
 	{
 		failed_exit(shared, 1);
 		return (mod_perror(ETHREAD));
 	}
-	while (i < shared->data.nb_max)
-	{
-    pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
-		shared->philo[i].number = i + 1;
-		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
-				&shared->philo[i]))
-		{
-			failed_exit(shared, i);
-			return (mod_perror(ETHREAD));
-		}
-		i++;
-	}
+	
+	start_time = get_mstime();
+	if (!thread_creation(shared, start_time))
+		return (false);
 	return (true);
 }
 

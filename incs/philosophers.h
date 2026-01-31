@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 18:25:14 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/16 08:36:38 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/01/31 10:40:08 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,6 @@
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
 
 // --- STRUCTURE ---
-typedef struct s_data
-{
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			must_eat;
-	size_t			nb_max;
-}					t_data;
-
 typedef struct s_philo
 {
 	// SHARED
@@ -49,10 +40,12 @@ typedef struct s_philo
 	pthread_mutex_t	*stdout_lock;
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
+
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			must_eat;
+
 	bool			*shut_up;
 	bool			*dead_status;
 	size_t			nb_max;
@@ -62,8 +55,9 @@ typedef struct s_philo
 	size_t			number;
 	size_t			meal_eated;
 	size_t			since_meal;
-  bool        ready;
-  pthread_mutex_t mtx_last_meal;
+	bool			ready;
+	size_t			start_time;
+	pthread_mutex_t	mtx_last_meal;
 }					t_philo;
 
 typedef struct s_shared
@@ -74,26 +68,36 @@ typedef struct s_shared
 	pthread_t		id_reaper;
 	bool			shut_up;
 	bool			dead_status;
-	t_data			data;
 	t_philo			*philo;
 }					t_shared;
 
 // --- PROTOTYPES ---
-size_t				ft_strlen(char *number);
-size_t				get_mstime(void);
-bool				parsing(int argc, char **argv, t_shared *shared);
-bool				choose_fork(t_philo *philo);
-bool				check_die(t_philo *philo);
+//   --- lib.c ---
+long  				ft_atol(char *number);
 int					ft_atoi(const char *nptr);
+size_t				ft_strlen(char *number);
+bool				string_isdigit(char *number);
+
+//   --- utils.c ---
 int					mod_perror(char *error);
-int					ft_atol(char *number);
-void				safe_print(t_philo *philo, char *str, size_t number);
+size_t				get_mstime(void);
+void				succes_exit(t_shared *shared);
 void				failed_exit(t_shared *shared, int stopped_at);
+void				safe_print(t_philo *philo, char *str, size_t number);
+
+//   --- parsing.c ---
+bool				parsing(int argc, char **argv, t_shared *shared);
+
+//   --- threading.c ---
+bool				check_die(t_philo *philo);
 void				*philosophers(void *ptr_philo);
+
+//   --- threading.c ---
 bool				philo_sleeping(t_philo *philo);
 bool				philo_thinking(t_philo *philo);
-void				succes_exit(t_shared *shared);
 bool				philo_eat(t_philo *philo);
+
+//   --- reaper.c ---
 void				*reaper(void *ptr_shared);
 
 #endif

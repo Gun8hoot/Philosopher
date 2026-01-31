@@ -12,7 +12,7 @@
 
 #include "incs/philosophers.h"
 
-bool	choose_fork(t_philo *philo)
+static bool	choose_fork(t_philo *philo)
 {
 	if (check_die(philo))
 		return (false);
@@ -47,9 +47,9 @@ bool	philo_eat(t_philo *philo)
 		return (false);
 	safe_print(philo, "is eating", philo->number);
 	usleep(philo->time_to_eat * 1000);
-  pthread_mutex_lock(&philo->mtx_last_meal);
+	pthread_mutex_lock(&philo->mtx_last_meal);
 	philo->since_meal = get_mstime();
-  pthread_mutex_unlock(&philo->mtx_last_meal);
+	pthread_mutex_unlock(&philo->mtx_last_meal);
 	philo->meal_eated++;
 	pthread_mutex_unlock(&*philo->fork_r);
 	pthread_mutex_unlock(&philo->fork_l);
@@ -60,11 +60,11 @@ bool	philo_sleeping(t_philo *philo)
 {
 	safe_print(philo, "is sleeping", philo->number);
 	usleep(philo->time_to_sleep * 1000);
-  return (true);
+	return (true);
 }
 
 bool	philo_thinking(t_philo *philo)
 {
 	safe_print(philo, "is thinking", philo->number);
-  return (true);
+	return (true);
 }
