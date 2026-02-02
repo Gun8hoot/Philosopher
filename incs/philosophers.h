@@ -39,7 +39,7 @@ typedef struct s_philo
 	pthread_mutex_t	*shut_up_lock;
 	pthread_mutex_t	*stdout_lock;
 	pthread_mutex_t	*fork_r;
-	pthread_mutex_t	fork_l;
+	pthread_mutex_t	*fork_l;
 
 	size_t			time_to_die;
 	size_t			time_to_eat;
@@ -52,6 +52,7 @@ typedef struct s_philo
 
 	// SELF
 	pthread_t		id;
+	pthread_t		reaper_id;
 	size_t			number;
 	size_t			meal_eated;
 	size_t			since_meal;
@@ -62,6 +63,7 @@ typedef struct s_philo
 
 typedef struct s_shared
 {
+	pthread_mutex_t	*fork_arr;
 	pthread_mutex_t	stdout_lock;
 	pthread_mutex_t	shut_up_lock;
 	pthread_mutex_t	dead_lock;

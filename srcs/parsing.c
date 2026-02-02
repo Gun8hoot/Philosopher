@@ -12,27 +12,32 @@
 
 #include "incs/philosophers.h"
 
-static bool	forks_attribution(t_shared *share)
+static bool	forks_attribution(t_shared *share, int max)
 {
-	size_t	i;
-	size_t	nb_max;
+	int	i;
 
-	nb_max = share->philo[0].nb_max;
 	i = 0;
-	while (i < nb_max)
+	
+	share->fork_arr = calloc(max, sizeof(pthread_mutex_t))
+	while (i < max)
+		pthread_mutex_init(&share->fork_arr[i++], NULL);
+	i = 0;
+	while (i < max)
 	{
-		if (pthread_mutex_init(&share->philo[i].fork_l, NULL))
-			return (mod_perror(EMTX));
 		if (i == 0)
-			share->philo[i].fork_r = &share->philo[nb_max - 1].fork_l;
+		{
+			share->philo[i].fork_r = &share->fork_arr[0];
+			share->philo[i].fork_l = &share->fork_arr[max - 1];
+		}
 		else
-			share->philo[i].fork_r = &share->philo[i - 1].fork_l;
+		{
+			share->philo[i].fork_r = &share->fork_arr[i];
+			share->philo[i].fork_l = &share->fork_arr[i - 1];
+		}
 		i++;
 	}
 	return (true);
 }
-
-
 
 static bool	init_philo(t_shared *share, int iter, int argc, char **argv)
 {
@@ -84,7 +89,7 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 	}
 	if (!init_shared(shared, ft_atoi(argv[1]), argc, argv))
 		return (false);
-	if (!forks_attribution(shared))
+	if (!forks_attribution(shared, ft_atoi(argv[1])))
 		return (false);
 	return (true);
 }

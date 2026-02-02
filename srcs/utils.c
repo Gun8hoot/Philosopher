@@ -49,7 +49,6 @@ void	succes_exit(t_shared *shared)
 			i++;
 		}
 	}
-	pthread_join(shared->id_reaper, NULL);
 	if (shared->philo)
 		free(shared->philo);
 	pthread_mutex_destroy(&shared->stdout_lock);
@@ -77,7 +76,7 @@ void	failed_exit(t_shared *shared, int stopped_at)
 	j = 0;
 	while (j < i)
 	{
-		pthread_mutex_destroy(&shared->philo[j].fork_l);
+		pthread_mutex_destroy(&*shared->philo[j].fork_l);
 		j++;
 	}
 }

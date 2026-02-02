@@ -44,13 +44,8 @@ static bool	init(t_shared *shared)
 	pthread_mutex_init(&shared->dead_lock, NULL);
 	pthread_mutex_init(&shared->shut_up_lock, NULL);
 
-	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
-	{
-		failed_exit(shared, 1);
-		return (mod_perror(ETHREAD));
-	}
-	
 	start_time = get_mstime();
+	printf("fork = %zu\n", shared->philo[0].nb_max);
 	if (!thread_creation(shared, start_time))
 		return (false);
 	return (true);

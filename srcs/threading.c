@@ -39,13 +39,12 @@ void	*philosophers(void *ptr_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
+	philo->since_meal = get_mstime();
+	if (philo->number & 1)
+		usleep(100);
 	if (philo->nb_max == 1)
 		case_one(philo);
-	else
-		philo->since_meal = get_mstime();
-	if (philo->nb_max > 1)
-		philo->ready = true;
-	while (!check_die(philo))
+	while (!*philo->dead_status)
 	{
 		if (!philo_eat(philo))
 			break ;

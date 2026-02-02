@@ -12,35 +12,27 @@
 
 #include "incs/philosophers.h"
 
-void	*reaper(void *ptr_shared)
+void	*reaper(void *ptr_philo)
 {
-	t_shared	*share;
-	size_t		i;
+	t_philo	*philo;
 
-	i = 0;
-	share = (t_shared *)ptr_shared;
-	usleep(5000);
-	while (!share->dead_status)
+	philo = (t_philo *)ptr_philo;
+	while (!*philo->dead_status)
 	{
-		i = 0;
-		while (!share->dead_status && i < share->philo[0].nb_max)
+		pthread_mutex_lock(&philo->mtx_last_meal);
+		if (philo->meal_eated == philo->must_eat)
+			*philo->dead_status = true;
+		else if (get_mstime() - philo->since_meal > philo->time_to_die)
 		{
-			pthread_mutex_lock(&share->philo[i].mtx_last_meal);
-			if (share->philo[i].ready
-				&& share->philo[i].meal_eated == share->philo[i].must_eat)
-				share->dead_status = true;
-			else if (share->philo[i].ready && get_mstime() - share->philo[i].since_meal > share->philo[i].time_to_die)
-			{
-				share->shut_up = true;
-				share->dead_status = true;
-				printf("%ld %ld died\n", get_mstime(), share->philo[i].number);
-				safe_print(&share->philo[i], "died", share->philo[i].number);
-//				printf("Take %ld ms\n", get_mstime()
-//					- share->philo[i].since_meal);
-			}
-			pthread_mutex_unlock(&share->philo[i].mtx_last_meal);
-			i++;
+			pthread_mutex_lock(&*philo->dead_lock);
+			*philo->dead_status = true;
+			pthread_mutex_unlock(&*philo->dead_lock);
+			safe_print(philo, "died", philo->number);
+			*philo->shut_up = true;
+			printf("Take %ld ms\n", get_mstime()
+				- philo->since_meal);
 		}
+		pthread_mutex_unlock(&philo->mtx_last_meal);
 	}
 	return (NULL);
 }
