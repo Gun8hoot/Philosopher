@@ -29,8 +29,10 @@ static void	case_one(t_philo *philo)
 
 bool	check_die(t_philo *philo)
 {
+  pthread_mutex_lock(&*philo->dead_lock);
 	if (*philo->dead_status)
-		return (true);
+		return (pthread_mutex_unlock(&*philo->dead_lock), true);
+  pthread_mutex_unlock(&*philo->dead_lock);
 	return (false);
 }
 
@@ -41,10 +43,10 @@ void	*philosophers(void *ptr_philo)
 	philo = (t_philo *)ptr_philo;
 	philo->since_meal = get_mstime();
 	if (philo->number & 1)
-		usleep(100);
+		usleep(500);
 	if (philo->nb_max == 1)
 		case_one(philo);
-	while (!*philo->dead_status)
+	while (!check_die(philo))
 	{
 		if (!philo_eat(philo))
 			break ;
@@ -53,5 +55,6 @@ void	*philosophers(void *ptr_philo)
 		if (!philo_sleeping(philo))
 			break ;
 	}
+  printf("Thread %ld go out\n", philo->number);
 	return (NULL);
 }

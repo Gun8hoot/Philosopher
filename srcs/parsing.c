@@ -16,9 +16,10 @@ static bool	forks_attribution(t_shared *share, int max)
 {
 	int	i;
 
-	i = 0;
-	
-	share->fork_arr = calloc(max, sizeof(pthread_mutex_t))
+	i = 0;	
+	share->fork_arr = calloc(max, sizeof(pthread_mutex_t));
+  if (!share->fork_arr)
+    return (false);
 	while (i < max)
 		pthread_mutex_init(&share->fork_arr[i++], NULL);
 	i = 0;
@@ -39,9 +40,10 @@ static bool	forks_attribution(t_shared *share, int max)
 	return (true);
 }
 
-static bool	init_philo(t_shared *share, int iter, int argc, char **argv)
+static void	init_philo(t_shared *share, int iter, int argc, char **argv)
 {
 	memset(&share->philo[iter], 0, sizeof(t_philo));
+
 	share->philo[iter].stdout_lock = &share->stdout_lock;
 	share->philo[iter].dead_status = &share->dead_status;
 	share->philo[iter].dead_lock = &share->dead_lock;
@@ -55,22 +57,20 @@ static bool	init_philo(t_shared *share, int iter, int argc, char **argv)
 		share->philo[iter].must_eat = ft_atoi(argv[5]);
 	else
 		share->philo[iter].must_eat = -1;
-	return (true);
 }
 
 static bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
 {
-	int iter; 
+	int i;
 
-	iter = 0;
+	i = 0;
 	share->philo = calloc(nb_max_philo, sizeof(t_philo));
 	if (!share->philo)
 		return (mod_perror(EALLOC));
-	share->dead_status = false;
-	while (iter < nb_max_philo)
+	while (i < nb_max_philo)
 	{
-		init_philo(share, iter, argc, argv);
-		iter++;
+		init_philo(share, i, argc, argv);
+		i++;
 	}
 	return (true);
 }
@@ -81,6 +81,8 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 
 	i = 0;
 	memset(shared, 0, sizeof(t_shared));
+  if (argc != 5 && argc != 6)
+    return (false);
 	while (i < argc - 1)
 	{
 		if (string_isdigit(argv[i + 1]))

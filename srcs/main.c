@@ -19,12 +19,13 @@ static bool  thread_creation(t_shared *shared, size_t start_time)
 	size_t i;
 
 	i = 0;
+  if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
+    return (false);
 	while (i < shared->philo[0].nb_max)
 	{
 		pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
 		shared->philo[i].number = i + 1;
 		shared->philo[i].start_time = start_time;
-		
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 		{
@@ -45,7 +46,6 @@ static bool	init(t_shared *shared)
 	pthread_mutex_init(&shared->shut_up_lock, NULL);
 
 	start_time = get_mstime();
-	printf("fork = %zu\n", shared->philo[0].nb_max);
 	if (!thread_creation(shared, start_time))
 		return (false);
 	return (true);

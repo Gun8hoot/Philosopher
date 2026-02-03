@@ -32,9 +32,15 @@
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
 
 // --- STRUCTURE ---
+/*
+typedef struct s_data {
+  
+} t_data;
+*/
 typedef struct s_philo
 {
 	// SHARED
+	pthread_mutex_t	mtx_last_meal;
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*shut_up_lock;
 	pthread_mutex_t	*stdout_lock;
@@ -44,7 +50,7 @@ typedef struct s_philo
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
-	size_t			must_eat;
+	int			must_eat;
 
 	bool			*shut_up;
 	bool			*dead_status;
@@ -54,23 +60,24 @@ typedef struct s_philo
 	pthread_t		id;
 	pthread_t		reaper_id;
 	size_t			number;
-	size_t			meal_eated;
+	int     meal_eated;
 	size_t			since_meal;
 	bool			ready;
 	size_t			start_time;
-	pthread_mutex_t	mtx_last_meal;
 }					t_philo;
 
 typedef struct s_shared
 {
+	t_philo			*philo;
 	pthread_mutex_t	*fork_arr;
 	pthread_mutex_t	stdout_lock;
 	pthread_mutex_t	shut_up_lock;
 	pthread_mutex_t	dead_lock;
+
 	pthread_t		id_reaper;
+  int         max;
 	bool			shut_up;
 	bool			dead_status;
-	t_philo			*philo;
 }					t_shared;
 
 // --- PROTOTYPES ---
