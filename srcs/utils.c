@@ -26,24 +26,24 @@ int	mod_perror(char *error)
 	return (1);
 }
 
-size_t	get_mstime(void)
+int32_t	get_mstime(void)
 {
 	struct timeval	time;
-	size_t			ms;
+	int32_t			ms;
 
 	gettimeofday(&time, NULL);
-	ms = (size_t)(time.tv_sec * 1000 + time.tv_usec / 1000);
+	ms = (int32_t)(time.tv_sec * 1000 + time.tv_usec / 1000);
 	return (ms);
 }
 
 /*
-bool  better_usleep(t_philo *philo)
+bool	better_usleep(t_philo *philo)
 {
   while ()
 }
 */
 
-void	safe_print(t_philo *philo, char *str, size_t number)
+void	safe_print(t_philo *philo, char *str, int32_t number)
 {
 	pthread_mutex_lock(&*philo->stdout_lock);
 	if (*philo->shut_up)
@@ -51,6 +51,6 @@ void	safe_print(t_philo *philo, char *str, size_t number)
 		pthread_mutex_unlock(&*philo->stdout_lock);
 		return ;
 	}
-	printf("%ld %ld %s\n", get_mstime() - philo->start_time, number, str);
+	printf("%d %d %s\n", get_mstime() - philo->start_time, number, str);
 	pthread_mutex_unlock(&*philo->stdout_lock);
 }

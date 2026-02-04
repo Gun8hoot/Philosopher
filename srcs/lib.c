@@ -75,3 +75,24 @@ bool	string_isdigit(char *number)
 	}
 	return (0);
 }
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*arr;
+	size_t	i;
+
+	i = 0;
+	arr = malloc(size * nmemb);
+	if (!arr)
+		return (NULL);
+	if (size == 0)
+		return (arr);
+	while (i < (size * nmemb))
+	{
+		((char *)arr)[i] = '\0';
+		i++;
+	}
+	return (arr);
+}
+
+// int main(void)

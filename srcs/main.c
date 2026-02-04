@@ -14,14 +14,16 @@
 
 // https://nafuka11.github.io/philosophers-visualizer/
 
-static bool  thread_creation(t_shared *shared, size_t start_time)
+static bool	thread_creation(t_shared *shared)
 {
-	size_t i;
+	int32_t	start_time;
+	int32_t	i;
 
 	i = 0;
-  if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
-    return (false);
-	while (i < shared->philo[0].nb_max)
+	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
+		return (false);
+	start_time = get_mstime();
+	while (i < shared->data->nb_max)
 	{
 		pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
 		shared->philo[i].number = i + 1;
@@ -39,14 +41,10 @@ static bool  thread_creation(t_shared *shared, size_t start_time)
 
 static bool	init(t_shared *shared)
 {
-	size_t	start_time;
-
 	pthread_mutex_init(&shared->stdout_lock, NULL);
 	pthread_mutex_init(&shared->dead_lock, NULL);
 	pthread_mutex_init(&shared->shut_up_lock, NULL);
-
-	start_time = get_mstime();
-	if (!thread_creation(shared, start_time))
+	if (!thread_creation(shared))
 		return (false);
 	return (true);
 }

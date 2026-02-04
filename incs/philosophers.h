@@ -14,6 +14,7 @@
 # define PHILOSOPHERS_H
 
 // --- INCLUDES ---
+# include "incs/prototype.h"
 # include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
@@ -32,11 +33,17 @@
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
 
 // --- STRUCTURE ---
-/*
-typedef struct s_data {
-  
-} t_data;
-*/
+
+typedef struct s_data
+{
+	int32_t			time_to_die;
+	int32_t			time_to_eat;
+	int32_t			time_to_sleep;
+	int32_t			must_eat;
+	int32_t			nb_max;
+
+}					t_data;
+
 typedef struct s_philo
 {
 	// SHARED
@@ -47,52 +54,53 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	*fork_l;
 
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	int			must_eat;
+	int32_t			*time_to_die;
+	int32_t			*time_to_eat;
+	int32_t			*time_to_sleep;
+	int32_t			*must_eat;
+	int32_t			*nb_max;
 
 	bool			*shut_up;
 	bool			*dead_status;
-	size_t			nb_max;
 
 	// SELF
 	pthread_t		id;
 	pthread_t		reaper_id;
-	size_t			number;
-	int     meal_eated;
-	size_t			since_meal;
+	int32_t			number;
+	int				meal_eated;
+	int32_t			since_meal;
 	bool			ready;
-	size_t			start_time;
+	int32_t			start_time;
 }					t_philo;
 
 typedef struct s_shared
 {
 	t_philo			*philo;
+	t_data			*data;
 	pthread_mutex_t	*fork_arr;
 	pthread_mutex_t	stdout_lock;
 	pthread_mutex_t	shut_up_lock;
 	pthread_mutex_t	dead_lock;
 
 	pthread_t		id_reaper;
-  int         max;
+	int				max;
 	bool			shut_up;
 	bool			dead_status;
 }					t_shared;
 
 // --- PROTOTYPES ---
 //   --- lib.c ---
-long  				ft_atol(char *number);
+long				ft_atol(char *number);
 int					ft_atoi(const char *nptr);
 size_t				ft_strlen(char *number);
 bool				string_isdigit(char *number);
 
 //   --- utils.c ---
 int					mod_perror(char *error);
-size_t				get_mstime(void);
+int32_t				get_mstime(void);
 void				succes_exit(t_shared *shared);
 void				failed_exit(t_shared *shared, int stopped_at);
-void				safe_print(t_philo *philo, char *str, size_t number);
+void				safe_print(t_philo *philo, char *str, int32_t number);
 
 //   --- parsing.c ---
 bool				parsing(int argc, char **argv, t_shared *shared);
@@ -101,12 +109,18 @@ bool				parsing(int argc, char **argv, t_shared *shared);
 bool				check_die(t_philo *philo);
 void				*philosophers(void *ptr_philo);
 
-//   --- threading.c ---
+//   --- action.c ---
 bool				philo_sleeping(t_philo *philo);
 bool				philo_thinking(t_philo *philo);
 bool				philo_eat(t_philo *philo);
 
 //   --- reaper.c ---
 void				*reaper(void *ptr_shared);
+
+// --- structure.c ---
+bool				init_shared(t_shared *share, int nb_max_philo, int argc,
+						char **argv);
+void				init_philo(t_shared *share, int iter);
+bool				init_data(t_data **data, int argc, char **argv);
 
 #endif

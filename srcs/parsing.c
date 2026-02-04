@@ -16,10 +16,10 @@ static bool	forks_attribution(t_shared *share, int max)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	share->fork_arr = calloc(max, sizeof(pthread_mutex_t));
-  if (!share->fork_arr)
-    return (false);
+	if (!share->fork_arr)
+		return (false);
 	while (i < max)
 		pthread_mutex_init(&share->fork_arr[i++], NULL);
 	i = 0;
@@ -40,39 +40,12 @@ static bool	forks_attribution(t_shared *share, int max)
 	return (true);
 }
 
-static void	init_philo(t_shared *share, int iter, int argc, char **argv)
+static bool	check_overflow(char *number)
 {
-	memset(&share->philo[iter], 0, sizeof(t_philo));
-
-	share->philo[iter].stdout_lock = &share->stdout_lock;
-	share->philo[iter].dead_status = &share->dead_status;
-	share->philo[iter].dead_lock = &share->dead_lock;
-	share->philo[iter].shut_up_lock = &share->shut_up_lock;
-	share->philo[iter].shut_up = &share->shut_up;
-	share->philo[iter].nb_max = ft_atoi(argv[1]);
-	share->philo[iter].time_to_die = ft_atoi(argv[2]);
-	share->philo[iter].time_to_eat = ft_atoi(argv[3]);
-	share->philo[iter].time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		share->philo[iter].must_eat = ft_atoi(argv[5]);
-	else
-		share->philo[iter].must_eat = -1;
-}
-
-static bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
-{
-	int i;
-
-	i = 0;
-	share->philo = calloc(nb_max_philo, sizeof(t_philo));
-	if (!share->philo)
-		return (mod_perror(EALLOC));
-	while (i < nb_max_philo)
-	{
-		init_philo(share, i, argc, argv);
-		i++;
-	}
-	return (true);
+	if (ft_strlen(number) > 10 || (ft_atol(number) < 0
+			|| ft_atol(number) > INT_MAX))
+		return (mod_perror("[!] Number go out of bound (max 32bit sint) !\n"));
+	return (0);
 }
 
 bool	parsing(int argc, char **argv, t_shared *shared)
@@ -81,11 +54,11 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 
 	i = 0;
 	memset(shared, 0, sizeof(t_shared));
-  if (argc != 5 && argc != 6)
-    return (false);
+	if (argc != 5 && argc != 6)
+		return (false);
 	while (i < argc - 1)
 	{
-		if (string_isdigit(argv[i + 1]))
+		if (string_isdigit(argv[i + 1]) || check_overflow(argv[i + 1]))
 			return (false);
 		i++;
 	}

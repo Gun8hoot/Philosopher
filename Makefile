@@ -13,7 +13,7 @@
 NAME	=	philosophers
 
 CC		=	cc
-CFLAGS	=	-I. -Wall -Wextra -Werror -g3 -O3
+CFLAGS	=	-I. -Wall -Wextra -Werror -g3
 
 SRC_DIR	=	srcs
 INC_DIR	=	incs
@@ -24,6 +24,7 @@ CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/exit.c\
 			$(SRC_DIR)/parsing.c\
 			$(SRC_DIR)/threading.c\
+			$(SRC_DIR)/structure.c\
 			$(SRC_DIR)/utils.c\
 			$(SRC_DIR)/action.c
 SRCS	=	$(CSRC:%.c=%.o)
