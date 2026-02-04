@@ -48,6 +48,7 @@ typedef struct s_philo
 {
 	// SHARED
 	pthread_mutex_t	mtx_last_meal;
+	pthread_mutex_t	mtx_meal_eated;
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*shut_up_lock;
 	pthread_mutex_t	*stdout_lock;
@@ -94,6 +95,7 @@ long				ft_atol(char *number);
 int					ft_atoi(const char *nptr);
 size_t				ft_strlen(char *number);
 bool				string_isdigit(char *number);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 //   --- utils.c ---
 int					mod_perror(char *error);
@@ -101,6 +103,7 @@ int32_t				get_mstime(void);
 void				succes_exit(t_shared *shared);
 void				failed_exit(t_shared *shared, int stopped_at);
 void				safe_print(t_philo *philo, char *str, int32_t number);
+void	better_usleep(t_philo *philo, int32_t time);
 
 //   --- parsing.c ---
 bool				parsing(int argc, char **argv, t_shared *shared);

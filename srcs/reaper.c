@@ -70,7 +70,7 @@ void	*reaper(void *ptr_share)
 			break ;
 		if (!check_ttd(share))
 			break ;
-		usleep(10);
+		usleep(1000);
 	}
 	return (NULL);
 }

@@ -41,11 +41,11 @@ void	*philosophers(void *ptr_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
-	philo->since_meal = get_mstime();
 	if (philo->number & 1)
-		usleep(500);
+		usleep(400);
 	if (*philo->nb_max == 1)
 		case_one(philo);
+	philo->since_meal = get_mstime();
 	while (!check_die(philo))
 	{
 		if (!philo_eat(philo))

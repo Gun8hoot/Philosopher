@@ -14,7 +14,7 @@
 
 bool	init_data(t_data **data, int argc, char **argv)
 {
-	*data = calloc(1, sizeof(t_data));
+	*data = ft_calloc(1, sizeof(t_data));
 	if (!*data)
 		return (false);
 	(*data)->nb_max = ft_atoi(argv[1]);
@@ -40,7 +40,7 @@ void	init_philo(t_shared *share, int iter)
 	share->philo[iter].time_to_die = &share->data->time_to_die;
 	share->philo[iter].time_to_eat = &share->data->time_to_eat;
 	share->philo[iter].time_to_sleep = &share->data->time_to_sleep;
-	share->philo[iter].must_eat = &share->data->time_to_sleep;
+	share->philo[iter].must_eat = &share->data->must_eat;
 }
 
 bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
@@ -50,7 +50,7 @@ bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
 	i = 0;
 	if (!init_data(&share->data, argc, argv))
 		return (false);
-	share->philo = calloc(nb_max_philo, sizeof(t_philo));
+	share->philo = ft_calloc(nb_max_philo, sizeof(t_philo));
 	if (!share->philo)
 		return (mod_perror(EALLOC));
 	while (i < nb_max_philo)

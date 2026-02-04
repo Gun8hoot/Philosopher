@@ -17,7 +17,7 @@ static bool	forks_attribution(t_shared *share, int max)
 	int	i;
 
 	i = 0;
-	share->fork_arr = calloc(max, sizeof(pthread_mutex_t));
+	share->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
 	if (!share->fork_arr)
 		return (false);
 	while (i < max)

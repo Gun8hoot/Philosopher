@@ -38,19 +38,18 @@ int32_t	get_mstime(void)
 
 void	better_usleep(t_philo *philo, int32_t time)
 {
-	int32_t	start_time;
-	int32_t	elapsed;
+  int i;
 
-	start_time = get_mstime();
-	while (1)
-	{
-		if (check_die(philo))
-			break ;
-		elapsed = get_mstime() - start_time;
-		if (elapsed >= time)
-			break ;
-		usleep(500);
-	}
+  i = 0;
+  printf("philo %d %d\n", philo->number, time);
+  while (i < time * 1000 / 50)
+  {
+    if (!check_die(philo))
+      break ;
+    usleep(50);
+  }
+
+  printf("philo %d out\n", philo->number);
 }
 
 void	safe_print(t_philo *philo, char *str, int32_t number)
