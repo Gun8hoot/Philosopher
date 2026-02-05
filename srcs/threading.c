@@ -45,9 +45,7 @@ void	*philosophers(void *ptr_philo)
 		usleep(400);
 	if (*philo->nb_max == 1)
 		case_one(philo);
-	pthread_mutex_lock(&philo->mtx_last_meal);
 	philo->since_meal = get_mstime();
-	pthread_mutex_unlock(&philo->mtx_last_meal);
 	while (!check_die(philo))
 	{
 		if (!philo_eat(philo))

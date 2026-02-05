@@ -55,12 +55,11 @@ void	better_usleep(t_philo *philo, int32_t time)
 
 void	safe_print(t_philo *philo, char *str, int32_t number)
 {
-	pthread_mutex_lock(&*philo->stdout_lock);
 	if (*philo->shut_up)
 	{
-		pthread_mutex_unlock(&*philo->stdout_lock);
 		return ;
 	}
+	pthread_mutex_lock(&*philo->stdout_lock);
 	printf("%d %d %s\n", get_mstime() - philo->start_time, number, str);
 	pthread_mutex_unlock(&*philo->stdout_lock);
 }
