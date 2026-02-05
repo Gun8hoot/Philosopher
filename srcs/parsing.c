@@ -20,9 +20,7 @@ static bool	forks_attribution(t_shared *share, int max)
 	share->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
 	if (!share->fork_arr)
 		return (false);
-	while (i < max)
-		pthread_mutex_init(&share->fork_arr[i++], NULL);
-	i = 0;
+	pthread_mutex_init(share->fork_arr, NULL);
 	while (i < max)
 	{
 		if (i == 0)
@@ -44,7 +42,7 @@ static bool	check_overflow(char *number)
 {
 	if (ft_strlen(number) > 10 || (ft_atol(number) < 0
 			|| ft_atol(number) > INT_MAX))
-		return (mod_perror("[!] Number go out of bound (max 32bit sint) !\n"));
+		return (mod_perror(EOOB));
 	return (0);
 }
 

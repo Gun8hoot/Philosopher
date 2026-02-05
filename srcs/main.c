@@ -20,16 +20,19 @@ static bool	thread_creation(t_shared *shared)
 	int32_t	i;
 
 	i = 0;
-	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
-		return (false);
+	if (shared->data->nb_max > 1)
+	{
+		if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
+			return (false);
+	}
 	start_time = get_mstime();
 	while (i < shared->data->nb_max)
 	{
 		pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
-    pthread_mutex_init(&shared->philo[i].mtx_meal_eated, NULL);
+		pthread_mutex_init(&shared->philo[i].mtx_meal_eated, NULL);
 		shared->philo[i].number = i + 1;
 		shared->philo[i].start_time = start_time;
-	  shared->philo[i].since_meal = get_mstime();
+		shared->philo[i].since_meal = get_mstime();
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 		{

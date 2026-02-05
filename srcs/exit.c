@@ -1,6 +1,32 @@
 
 #include "incs/philosophers.h"
-
+/*
+void  free_struct(t_shared *share)
+{
+	int i;
+	
+	if (share->data)
+		free(share->data);
+	if (share->philo)
+	{
+		i = 0;
+		while ()
+		{
+			if (share->philo[i].mtx_last_meal)
+				pthread_mutex_destroy(share->philo[i].mtx_last_meal);
+			if (share->philo[i].mtx_meal_eated)
+				pthread_mutex_destroy(share->philo[i].mtx_meal_eated);
+			free(share->philo[i]);
+			i++;
+		}
+	}
+	if (share)
+	{
+		if (share->fork_arr)
+			free(share->fork_arr);
+	}
+}
+*/
 void	succes_exit(t_shared *shared)
 {
 	int32_t	i;

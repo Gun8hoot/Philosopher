@@ -44,13 +44,16 @@ static bool	check_ttd(t_shared *share)
 		if (get_mstime()
 			- share->philo[i].since_meal >= share->data->time_to_die)
 		{
-			pthread_mutex_lock(&share->dead_lock);
-			share->dead_status = true;
-			pthread_mutex_unlock(&share->dead_lock);
-			safe_print(&share->philo[i], "died", share->philo[i].number);
 			pthread_mutex_lock(&share->shut_up_lock);
 			share->shut_up = true;
 			pthread_mutex_unlock(&share->shut_up_lock);
+			pthread_mutex_lock(&share->stdout_lock);
+			printf("%d %d died\n", get_mstime() - share->philo[i].start_time, share->philo[i].number);
+			pthread_mutex_unlock(&share->stdout_lock);
+			pthread_mutex_lock(&share->dead_lock);
+			share->dead_status = true;
+			pthread_mutex_unlock(&share->dead_lock);
+
 			return (false);
 		}
 		i++;
