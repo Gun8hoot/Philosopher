@@ -17,18 +17,8 @@ static bool	choose_fork(t_philo *philo)
 	if (check_die(philo))
 		return (false);
 	pthread_mutex_lock(&*philo->fork_l);
-	if (check_die(philo))
-	{
-		pthread_mutex_unlock(&*philo->fork_l);
-		return (false);
-	}
 	safe_print(philo, "has taken a fork", philo->number);
 	pthread_mutex_lock(&*philo->fork_r);
-	if (check_die(philo))
-	{
-		pthread_mutex_unlock(&*philo->fork_r);
-		return (pthread_mutex_unlock(&*philo->fork_l), false);
-	}
 	return (safe_print(philo, "has taken a fork", philo->number), true);
 }
 
@@ -37,9 +27,11 @@ bool	philo_eat(t_philo *philo)
 	if (!choose_fork(philo))
 		return (false);
 	safe_print(philo, "is eating", philo->number);
+	philo->isEating = true;
 	better_usleep(philo, *philo->time_to_eat);
 	pthread_mutex_lock(&philo->mtx_last_meal);
 	philo->since_meal = get_mstime();
+	philo->isEating = false;
 	pthread_mutex_unlock(&philo->mtx_last_meal);
 	pthread_mutex_lock(&philo->mtx_meal_eated);
 	philo->meal_eated++;

@@ -42,7 +42,7 @@ void	*philosophers(void *ptr_philo)
 
 	philo = (t_philo *)ptr_philo;
 	if (philo->number & 1)
-		usleep(400);
+		usleep(1000);
 	if (*philo->nb_max == 1)
 		case_one(philo);
 	philo->since_meal = get_mstime();

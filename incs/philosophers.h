@@ -63,6 +63,7 @@ typedef struct s_philo
 
 	bool			*shut_up;
 	bool			*dead_status;
+	bool			isEating;
 
 	// SELF
 	pthread_t		id;
