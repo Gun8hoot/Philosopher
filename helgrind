@@ -1,0 +1,369 @@
+==17644== Helgrind, a thread error detector
+==17644== Copyright (C) 2007-2024, and GNU GPL'd, by OpenWorks LLP et al.
+==17644== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==17644== Command: ./philosophers 5 810 400 400
+==17644==
+==17644== ---Thread-Announcement------------------------------------------
+==17644==
+==17644== Thread #1 is the program's root thread
+==17644==
+==17644== ---Thread-Announcement------------------------------------------
+==17644==
+==17644== Thread #2 was created
+==17644==    at 0x49A8823: clone (clone.S:76)
+==17644==    by 0x49A8980: __clone_internal_fallback (clone-internal.c:64)
+==17644==    by 0x49A8980: __clone_internal (clone-internal.c:109)
+==17644==    by 0x49244ED: create_thread (pthread_create.c:298)
+==17644==    by 0x492516B: pthread_create@@GLIBC_2.34 (pthread_create.c:841)
+==17644==    by 0x485C2C3: pthread_create_WRK (hg_intercepts.c:449)
+==17644==    by 0x400150E: thread_creation (main.c:25)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during write of size 4 at 0x4A82148 by thread #1
+==17644== Locks held: none
+==17644==    at 0x40015AA: thread_creation (main.c:34)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==
+==17644== This conflicts with a previous read of size 4 by thread #2
+==17644== Locks held: none
+==17644==    at 0x40019B0: check_ttd (reaper.c:53)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==  Address 0x4a82148 is 168 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 4 at 0x4A82148 by thread #2
+==17644== Locks held: none
+==17644==    at 0x40019B0: check_ttd (reaper.c:53)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 4 by thread #1
+==17644== Locks held: none
+==17644==    at 0x40015AA: thread_creation (main.c:34)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82148 is 168 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+16 1 has taken a fork
+28 1 has taken a fork
+35 1 is eating
+42 2 has taken a fork
+44 4 has taken a fork
+44 4 has taken a fork
+44 4 is eating
+==17644== ---Thread-Announcement------------------------------------------
+==17644==
+==17644== Thread #3 was created
+==17644==    at 0x49A8823: clone (clone.S:76)
+==17644==    by 0x49A8980: __clone_internal_fallback (clone-internal.c:64)
+==17644==    by 0x49A8980: __clone_internal (clone-internal.c:109)
+==17644==    by 0x49244ED: create_thread (pthread_create.c:298)
+==17644==    by 0x492516B: pthread_create@@GLIBC_2.34 (pthread_create.c:841)
+==17644==    by 0x485C2C3: pthread_create_WRK (hg_intercepts.c:449)
+==17644==    by 0x40015FE: thread_creation (main.c:35)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644==  Lock at 0x4A820A0 was first observed
+==17644==    at 0x485DFAC: pthread_mutex_init (hg_intercepts.c:822)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a820a0 is 0 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== Possible data race during write of size 4 at 0x4A82148 by thread #3
+==17644== Locks held: 1, at address 0x4A820A0
+==17644==    at 0x40028A8: philo_eat (action.c:40)
+==17644==    by 0x40021DB: philosophers (threading.c:48)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 4 by thread #1
+==17644== Locks held: none
+==17644==    at 0x40015AA: thread_creation (main.c:34)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82148 is 168 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+444 1 is thinking
+445 1 is sleeping
+446 4 is thinking
+446 4 is sleeping
+446 2 has taken a fork
+446 2 is eating
+446 5 has taken a fork
+446 5 has taken a fork
+446 5 is eating
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A82158 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001A1E: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x4927690: memset (string_fortified.h:59)
+==17644==    by 0x4927690: pthread_mutex_init@@GLIBC_2.2.5 (pthread_mutex_init.c:89)
+==17644==    by 0x485DF49: pthread_mutex_init (hg_intercepts.c:819)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82158 is 184 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A82160 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001A21: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x4927690: memset (string_fortified.h:59)
+==17644==    by 0x4927690: pthread_mutex_init@@GLIBC_2.2.5 (pthread_mutex_init.c:89)
+==17644==    by 0x485DF49: pthread_mutex_init (hg_intercepts.c:819)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82160 is 192 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A82168 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001A2C: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x492769B: memset (string_fortified.h:59)
+==17644==    by 0x492769B: pthread_mutex_init@@GLIBC_2.2.5 (pthread_mutex_init.c:89)
+==17644==    by 0x485DF49: pthread_mutex_init (hg_intercepts.c:819)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82168 is 200 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A82170 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001A30: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x492769B: memset (string_fortified.h:59)
+==17644==    by 0x492769B: pthread_mutex_init@@GLIBC_2.2.5 (pthread_mutex_init.c:89)
+==17644==    by 0x485DF49: pthread_mutex_init (hg_intercepts.c:819)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82170 is 208 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A82178 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001A3C: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x4927680: memset (string_fortified.h:59)
+==17644==    by 0x4927680: pthread_mutex_init@@GLIBC_2.2.5 (pthread_mutex_init.c:89)
+==17644==    by 0x485DF49: pthread_mutex_init (hg_intercepts.c:819)
+==17644==    by 0x400154C: thread_creation (main.c:31)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82178 is 216 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 8 at 0x4A821E8 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001AB8: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 8 by thread #1
+==17644== Locks held: none
+==17644==    at 0x49250DE: pthread_create@@GLIBC_2.34 (pthread_create.c:760)
+==17644==    by 0x485C2C3: pthread_create_WRK (hg_intercepts.c:449)
+==17644==    by 0x40015FE: thread_creation (main.c:35)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a821e8 is 328 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 4 at 0x4A821F8 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001AD4: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 4 by thread #1
+==17644== Locks held: none
+==17644==    at 0x4001569: thread_creation (main.c:32)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a821f8 is 344 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 4 at 0x4A82200 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001ADB: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 4 by thread #1
+==17644== Locks held: none
+==17644==    at 0x40015AA: thread_creation (main.c:34)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82200 is 352 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+==17644== ----------------------------------------------------------------
+==17644==
+==17644== Possible data race during read of size 4 at 0x4A82208 by thread #2
+==17644== Locks held: none
+==17644==    at 0x4001AF0: check_ttd (reaper.c:61)
+==17644==    by 0x4001BC3: reaper (reaper.c:79)
+==17644==    by 0x485C4CB: mythread_wrapper (hg_intercepts.c:410)
+==17644==    by 0x492498A: start_thread (pthread_create.c:448)
+==17644==    by 0x49A8833: clone (clone.S:100)
+==17644==
+==17644== This conflicts with a previous write of size 4 by thread #1
+==17644== Locks held: none
+==17644==    at 0x4001588: thread_creation (main.c:33)
+==17644==    by 0x40016A3: init (main.c:51)
+==17644==    by 0x400173D: main (main.c:64)
+==17644==  Address 0x4a82208 is 360 bytes inside a block of size 920 alloc'd
+==17644==    at 0x484F8A8: malloc (vg_replace_malloc.c:446)
+==17644==    by 0x4001480: ft_calloc (lib.c:85)
+==17644==    by 0x400253C: init_shared (structure.c:53)
+==17644==    by 0x4002015: parsing (parsing.c:63)
+==17644==    by 0x4001720: main (main.c:62)
+==17644==  Block was alloc'd by thread #1
+==17644==
+819 2 died
+REAPER is gone
+Thread 2 go out
+Thread 5 go out
+Thread 3 go out
+Thread 1 go out
+Thread 4 go out
+==17644==
+==17644== Use --history-level=approx or =none to gain increased speed, at
+==17644== the cost of reduced accuracy of conflicting-access information
+==17644== For lists of detected and suppressed errors, rerun with: -s
+==17644== ERROR SUMMARY: 2431 errors from 12 contexts (suppressed: 5600 from 110)

@@ -41,8 +41,7 @@ void	succes_exit(t_shared *shared)
 		}
 	}
 	pthread_join(shared->id_reaper, NULL);
-	if (shared->philo)
-		free(shared->philo);
+	free(shared->philo);
 	i = 0;
 	//  while (i < )
 	//    free(shared->fork_arr[i++]);

@@ -47,8 +47,7 @@ typedef struct s_data
 typedef struct s_philo
 {
 	// SHARED
-	pthread_mutex_t	mtx_last_meal;
-	pthread_mutex_t	mtx_meal_eated;
+	pthread_mutex_t	info;
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*shut_up_lock;
 	pthread_mutex_t	*stdout_lock;

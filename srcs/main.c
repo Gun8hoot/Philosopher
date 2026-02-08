@@ -28,11 +28,9 @@ static bool	thread_creation(t_shared *shared)
 	start_time = get_mstime();
 	while (i < shared->data->nb_max)
 	{
-		pthread_mutex_init(&shared->philo[i].mtx_last_meal, NULL);
-		pthread_mutex_init(&shared->philo[i].mtx_meal_eated, NULL);
+		pthread_mutex_init(&shared->philo[i].info, NULL);
 		shared->philo[i].number = i + 1;
 		shared->philo[i].start_time = start_time;
-		shared->philo[i].since_meal = get_mstime();
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 		{
