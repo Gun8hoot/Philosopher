@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:53:06 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/20 09:06:30 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:16:03 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,15 @@ static bool	thread_creation(t_shared *shared)
 	int32_t	i;
 
 	i = 0;
-	if (shared->data->nb_max > 1)
-	{
-		if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
-			return (false);
-	}
+	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
+		return (false);
 	start_time = get_mstime();
 	while (i < shared->data->nb_max)
 	{
-		pthread_mutex_init(&shared->philo[i].info, NULL);
 		pthread_mutex_lock(&shared->philo[i].info);
 		shared->philo[i].number = i + 1;
 		shared->philo[i].start_time = start_time;
 		pthread_mutex_unlock(&shared->philo[i].info);
-		printf("philo %d have been created\n", shared->philo[i].number);
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 		{

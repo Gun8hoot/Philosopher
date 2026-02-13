@@ -14,7 +14,6 @@
 # define PHILOSOPHERS_H
 
 // --- INCLUDES ---
-# include "incs/prototype.h"
 # include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
@@ -62,7 +61,6 @@ typedef struct s_philo
 
 	bool			*shut_up;
 	bool			*dead_status;
-	bool			isEating;
 
 	// SELF
 	pthread_t		id;

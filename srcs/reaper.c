@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reaper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:59:21 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/31 10:40:13 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:10:06 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static void	is_dead(t_philo philo)
 	pthread_mutex_lock(&*philo.stdout_lock);
 	*philo.shut_up = true;
 	pthread_mutex_unlock(&*philo.stdout_lock);
-	pthread_mutex_lock(&*philo.dead_lock);	
+	pthread_mutex_lock(&*philo.dead_lock);
 	*philo.dead_status = true;
-	pthread_mutex_unlock(&*philo.dead_lock);	
+	pthread_mutex_unlock(&*philo.dead_lock);
 }
 
 static bool	check_must_eat(t_shared *share)
@@ -63,7 +63,8 @@ static bool	check_ttd(t_shared *share)
 			- share->philo[i].since_meal >= share->data->time_to_die)
 		{
 			is_dead(share->philo[i]);
-			printf("%d %d died\n", get_mstime() - share->philo[i].start_time, share->philo[i].number);
+			printf("%d %d died\n", get_mstime() - share->philo[i].start_time,
+				share->philo[i].number);
 			pthread_mutex_unlock(&share->philo[i].info);
 			return (false);
 		}
@@ -78,7 +79,7 @@ void	*reaper(void *ptr_share)
 	t_shared	*share;
 
 	share = (t_shared *)ptr_share;
-	usleep(50);
+	usleep(500);
 	while (!share->dead_status)
 	{
 		if (!check_must_eat(share))
@@ -87,6 +88,5 @@ void	*reaper(void *ptr_share)
 			break ;
 		usleep(500);
 	}
-	printf("REAPER is gone\n");
 	return (NULL);
 }

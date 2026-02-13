@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threading.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 20:16:41 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/16 11:51:07 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:05:09 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ void	*philosophers(void *ptr_philo)
 		if (!philo_sleeping(philo))
 			break ;
 	}
-	printf("Thread %d go out\n", philo->number);
 	return (NULL);
 }

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/13 09:33:22 by nclavel           #+#    #+#             */
+/*   Updated: 2026/02/13 09:33:23 by nclavel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "incs/philosophers.h"
+
 /*
-void  free_struct(t_shared *share)
+void	free_struct(t_shared *share)
 {
-	int i;
-	
+	int	i;
+
 	if (share->data)
 		free(share->data);
 	if (share->philo)

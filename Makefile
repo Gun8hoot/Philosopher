@@ -14,10 +14,9 @@ NAME	=	philosophers
 
 CC		=	cc
 #CFLAGS	=	-I. -Wall -Wextra -Werror -O2
-CFLAGS	=	-I. -Wall -Wextra -Werror -g3
+CFLAGS	=	-I. -Wall -Wextra -Werror -g3 -c
 
 SRC_DIR	=	srcs
-INC_DIR	=	incs
 
 CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/main.c\
@@ -28,13 +27,13 @@ CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/structure.c\
 			$(SRC_DIR)/utils.c\
 			$(SRC_DIR)/action.c
-SRCS	=	$(CSRC:%.c=%.o)
+OBJS	=	$(CSRC:%.c=%.o)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
 
-$(NAME):
-	$(CC) $(CFLAGS) $(CSRC) -o $@
+$(NAME): $(OBJS)
+	$(CC)  $(OBJS) -o $@
 
 clean:
 	rm -f srcs/*.o

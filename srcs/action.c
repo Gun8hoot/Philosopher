@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:23:29 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/19 10:39:45 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:06:57 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "incs/philosophers.h"
 
-static bool	choose_fork(t_philo *philo, pthread_mutex_t **first, pthread_mutex_t **second)
+static bool	choose_fork(t_philo *philo, pthread_mutex_t **first,
+		pthread_mutex_t **second)
 {
 	*first = philo->fork_l;
 	*second = philo->fork_r;
@@ -41,8 +42,8 @@ static bool	choose_fork(t_philo *philo, pthread_mutex_t **first, pthread_mutex_t
 
 bool	philo_eat(t_philo *philo)
 {
-	pthread_mutex_t *first;
-	pthread_mutex_t *second;
+	pthread_mutex_t	*first;
+	pthread_mutex_t	*second;
 
 	if (!choose_fork(philo, &first, &second))
 		return (false);

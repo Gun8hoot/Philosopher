@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 20:16:37 by nclavel           #+#    #+#             */
-/*   Updated: 2026/01/16 08:41:41 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:05:27 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static bool	forks_attribution(t_shared *share, int max)
 	while (i < max)
 	{
 		pthread_mutex_init(&share->fork_arr[i], NULL);
-		printf("philo %d take fork of %d and %d\n",i,  i, (i + 1) % max);
 		share->philo[i].fork_r = &share->fork_arr[i];
 		share->philo[i].fork_l = &share->fork_arr[(i + 1) % max];
 		i++;

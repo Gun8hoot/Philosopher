@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nclavel <nclavel@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 08:17:04 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/04 08:19:13 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/13 09:15:58 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool	init_data(t_data **data, int argc, char **argv)
 void	init_philo(t_shared *share, int iter)
 {
 	memset(&share->philo[iter], 0, sizeof(t_philo));
+	pthread_mutex_init(&share->philo[iter].info, NULL);
 	share->philo[iter].stdout_lock = &share->stdout_lock;
 	share->philo[iter].dead_status = &share->dead_status;
 	share->philo[iter].dead_lock = &share->dead_lock;
