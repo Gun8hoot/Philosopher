@@ -17,11 +17,7 @@
 static void	case_one(t_philo *philo)
 {
 	safe_print(philo, "has taken a fork", philo->number);
-	safe_print(philo, "has taken a fork", philo->number);
-	safe_print(philo, "is eating", philo->number);
-	usleep(*philo->time_to_eat * 1000);
-	philo_thinking(philo);
-	philo_sleeping(philo);
+	usleep(*philo->time_to_die * 1000);
 	safe_print(philo, "died", philo->number);
 	*philo->dead_status = true;
 }
@@ -39,8 +35,8 @@ void	*philosophers(void *ptr_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
-	if (philo->number & 1)
-		usleep(300);
+	if (philo->number % 2)
+		better_usleep(philo, 1000);
 	if (*philo->nb_max == 1)
 		case_one(philo);
 	while (!check_die(philo))

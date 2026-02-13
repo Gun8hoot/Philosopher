@@ -14,18 +14,35 @@
 
 static bool	choose_fork(t_philo *philo)
 {
-	if (check_die(philo))
-		return (false);
-	if (philo->number & 1)
-		pthread_mutex_lock(&*philo->fork_l);
-	else 
-		pthread_mutex_lock(&*philo->fork_r);
+	pthread_mutex_t *first;
+	pthread_mutex_t *second;
+
+	if (philo->fork_r > philo->fork_l)
+	{
+		first = philo->fork_l;
+		second = philo->fork_r;
+	}
+	else
+	{
+		first = philo->fork_r;
+		second = philo->fork_l;
+	}
+	pthread_mutex_lock(&*first);
 	safe_print(philo, "has taken a fork", philo->number);
-	if (philo->number & 1)
-		pthread_mutex_lock(&*philo->fork_r);
-	else 
-		pthread_mutex_lock(&*philo->fork_l);
-	return (safe_print(philo, "has taken a fork", philo->number), true);
+	if (check_die(philo))
+	{
+		pthread_mutex_unlock(&*first);
+		return (false);
+	}
+	pthread_mutex_lock(&*second);
+	safe_print(philo, "has taken a fork", philo->number);
+	if (check_die(philo))
+	{
+		pthread_mutex_unlock(&*first);
+		pthread_mutex_unlock(&*second);
+		return (false);
+	}
+	return (true);
 }
 
 bool	philo_eat(t_philo *philo)
@@ -53,5 +70,6 @@ bool	philo_sleeping(t_philo *philo)
 bool	philo_thinking(t_philo *philo)
 {
 	safe_print(philo, "is thinking", philo->number);
+	better_usleep(philo, 500);
 	return (true);
 }

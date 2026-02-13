@@ -38,7 +38,7 @@ static bool	check_must_eat(t_shared *share)
 			i++;
 		}
 		if (counter == share->data->nb_max)
-			return (is_dead(share->philo[i]), false);
+			return (is_dead(share->philo[0]), false);
 	}
 	return (true);
 }
@@ -53,7 +53,6 @@ static bool	check_ttd(t_shared *share)
 		pthread_mutex_lock(&share->philo[i].info);
 		if (share->philo[i].since_meal == 0)
 		{
-			i++;
 			pthread_mutex_unlock(&share->philo[i].info);
 			continue ;
 		}
@@ -76,6 +75,7 @@ void	*reaper(void *ptr_share)
 	t_shared	*share;
 
 	share = (t_shared *)ptr_share;
+	usleep(50);
 	while (!share->dead_status)
 	{
 		if (!check_must_eat(share))

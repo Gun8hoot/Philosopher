@@ -20,19 +20,12 @@ static bool	forks_attribution(t_shared *share, int max)
 	share->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
 	if (!share->fork_arr)
 		return (false);
-	pthread_mutex_init(share->fork_arr, NULL);
 	while (i < max)
 	{
-		if (i == 0)
-		{
-			share->philo[i].fork_r = &share->fork_arr[0];
-			share->philo[i].fork_l = &share->fork_arr[max - 1];
-		}
-		else
-		{
-			share->philo[i].fork_r = &share->fork_arr[i];
-			share->philo[i].fork_l = &share->fork_arr[i - 1];
-		}
+		pthread_mutex_init(&share->fork_arr[i], NULL);
+		printf("philo %d take fork of %d and %d\n",i,  i, (i + 1) % max);
+		share->philo[i].fork_r = &share->fork_arr[i];
+		share->philo[i].fork_l = &share->fork_arr[(i + 1) % max];
 		i++;
 	}
 	return (true);

@@ -41,10 +41,14 @@ void	succes_exit(t_shared *shared)
 		}
 	}
 	pthread_join(shared->id_reaper, NULL);
-	free(shared->philo);
-	i = 0;
-	//  while (i < )
-	//    free(shared->fork_arr[i++]);
+	if (shared->philo)
+		free(shared->philo);
+	while (i < shared->data->nb_max)
+		pthread_mutex_destroy(&shared->fork_arr[i++]);
+	if (shared->data)
+		free(shared->data);
+	if (shared->fork_arr)
+		free(shared->fork_arr);
 	pthread_mutex_destroy(&shared->stdout_lock);
 	pthread_mutex_destroy(&shared->shut_up_lock);
 	pthread_mutex_destroy(&shared->dead_lock);
