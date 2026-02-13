@@ -49,7 +49,7 @@ void	better_usleep(t_philo *philo, int32_t time)
 		elapsed = get_mstime() - start_time;
 		if (elapsed >= time)
 			break ;
-		usleep(3000);
+		usleep(250);
 	}
 }
 

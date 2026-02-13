@@ -29,8 +29,11 @@ static bool	thread_creation(t_shared *shared)
 	while (i < shared->data->nb_max)
 	{
 		pthread_mutex_init(&shared->philo[i].info, NULL);
+		pthread_mutex_lock(&shared->philo[i].info);
 		shared->philo[i].number = i + 1;
 		shared->philo[i].start_time = start_time;
+		pthread_mutex_unlock(&shared->philo[i].info);
+		printf("philo %d have been created\n", shared->philo[i].number);
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 		{

@@ -35,8 +35,8 @@ void	*philosophers(void *ptr_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr_philo;
-	if (philo->number % 2)
-		better_usleep(philo, 1000);
+	if (philo->number % 2 == 0)
+		usleep(500);
 	if (*philo->nb_max == 1)
 		case_one(philo);
 	while (!check_die(philo))

@@ -33,8 +33,10 @@ static bool	check_must_eat(t_shared *share)
 	{
 		while (i < share->data->nb_max)
 		{
+			pthread_mutex_lock(&share->philo[i].info);
 			if (share->philo[i].meal_eated >= share->data->must_eat)
 				counter++;
+			pthread_mutex_unlock(&share->philo[i].info);
 			i++;
 		}
 		if (counter == share->data->nb_max)
@@ -54,6 +56,7 @@ static bool	check_ttd(t_shared *share)
 		if (share->philo[i].since_meal == 0)
 		{
 			pthread_mutex_unlock(&share->philo[i].info);
+			i++;
 			continue ;
 		}
 		if (get_mstime()

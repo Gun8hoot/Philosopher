@@ -12,34 +12,28 @@
 
 #include "incs/philosophers.h"
 
-static bool	choose_fork(t_philo *philo)
+static bool	choose_fork(t_philo *philo, pthread_mutex_t **first, pthread_mutex_t **second)
 {
-	pthread_mutex_t *first;
-	pthread_mutex_t *second;
-
-	if (philo->fork_r > philo->fork_l)
+	*first = philo->fork_l;
+	*second = philo->fork_r;
+	if (*first > *second)
 	{
-		first = philo->fork_l;
-		second = philo->fork_r;
+		*first = philo->fork_r;
+		*second = philo->fork_l;
 	}
-	else
-	{
-		first = philo->fork_r;
-		second = philo->fork_l;
-	}
-	pthread_mutex_lock(&*first);
+	pthread_mutex_lock(*first);
 	safe_print(philo, "has taken a fork", philo->number);
 	if (check_die(philo))
 	{
-		pthread_mutex_unlock(&*first);
+		pthread_mutex_unlock(*first);
 		return (false);
 	}
-	pthread_mutex_lock(&*second);
+	pthread_mutex_lock(*second);
 	safe_print(philo, "has taken a fork", philo->number);
 	if (check_die(philo))
 	{
-		pthread_mutex_unlock(&*first);
-		pthread_mutex_unlock(&*second);
+		pthread_mutex_unlock(*first);
+		pthread_mutex_unlock(*second);
 		return (false);
 	}
 	return (true);
@@ -47,12 +41,15 @@ static bool	choose_fork(t_philo *philo)
 
 bool	philo_eat(t_philo *philo)
 {
-	if (!choose_fork(philo))
+	pthread_mutex_t *first;
+	pthread_mutex_t *second;
+
+	if (!choose_fork(philo, &first, &second))
 		return (false);
 	safe_print(philo, "is eating", philo->number);
 	better_usleep(philo, *philo->time_to_eat);
-	pthread_mutex_unlock(&*philo->fork_r);
 	pthread_mutex_unlock(&*philo->fork_l);
+	pthread_mutex_unlock(&*philo->fork_r);
 	pthread_mutex_lock(&philo->info);
 	philo->since_meal = get_mstime();
 	philo->meal_eated++;
@@ -69,7 +66,7 @@ bool	philo_sleeping(t_philo *philo)
 
 bool	philo_thinking(t_philo *philo)
 {
+	(void)philo;
 	safe_print(philo, "is thinking", philo->number);
-	better_usleep(philo, 500);
 	return (true);
 }
