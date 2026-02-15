@@ -60,6 +60,7 @@ typedef struct s_philo
 	int32_t			*nb_max;
 
 	bool			*shut_up;
+	bool			mtx_status_info;
 	bool			*dead_status;
 
 	// SELF
@@ -69,6 +70,7 @@ typedef struct s_philo
 	int				meal_eated;
 	int32_t			since_meal;
 	bool			ready;
+	bool			created;
 	int32_t			start_time;
 }					t_philo;
 
@@ -85,6 +87,11 @@ typedef struct s_shared
 	int32_t			thread_created;
 	bool			shut_up;
 	bool			dead_status;
+	bool			reaper_created;
+	bool			mtx_status_shutup;
+	bool			mtx_status_stdout;
+	bool			mtx_status_deadlock;
+	bool			mtx_status_forkarr;
 }					t_shared;
 
 // --- PROTOTYPES ---
@@ -123,5 +130,8 @@ bool				init_shared(t_shared *share, int nb_max_philo, int argc,
 						char **argv);
 void				init_philo(t_shared *share, int iter);
 bool				init_data(t_data **data, int argc, char **argv);
+
+// --- clean.c ---
+void				ft_exit(t_shared *shared);
 
 #endif

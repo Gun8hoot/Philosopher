@@ -26,6 +26,7 @@ CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/threading.c\
 			$(SRC_DIR)/structure.c\
 			$(SRC_DIR)/utils.c\
+			$(SRC_DIR)/clean.c\
 			$(SRC_DIR)/action.c
 OBJS	=	$(CSRC:%.c=%.o)
 

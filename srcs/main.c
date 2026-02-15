@@ -22,6 +22,7 @@ static bool	thread_creation(t_shared *shared)
 	i = 0;
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
 		return (false);
+	shared->reaper_created = true;
 	start_time = get_mstime();
 	while (i < shared->data->nb_max)
 	{
@@ -35,6 +36,7 @@ static bool	thread_creation(t_shared *shared)
 			failed_exit(shared, i);
 			return (mod_perror(ETHREAD), false);
 		}
+		shared->philo[i].created = true;
 		i++;
 	}
 	return (true);
@@ -43,8 +45,11 @@ static bool	thread_creation(t_shared *shared)
 static bool	init(t_shared *shared)
 {
 	pthread_mutex_init(&shared->stdout_lock, NULL);
+	shared->mtx_status_stdout = true;
 	pthread_mutex_init(&shared->dead_lock, NULL);
+	shared->mtx_status_deadlock = true;
 	pthread_mutex_init(&shared->shut_up_lock, NULL);
+	shared->mtx_status_shutup = true;
 	if (!thread_creation(shared))
 		return (false);
 	return (true);
@@ -57,9 +62,9 @@ int	main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (mod_perror(EARGNB));
 	if (!parsing(argc, argv, &shared))
-		return (1);
+		return (ft_exit(&shared), EXIT_FAILURE);
 	if (!init(&shared))
-		return (1);
-	succes_exit(&shared);
-	return (0);
+		return (ft_exit(&shared), EXIT_FAILURE);
+	ft_exit(&shared);
+	return (EXIT_SUCCESS);
 }

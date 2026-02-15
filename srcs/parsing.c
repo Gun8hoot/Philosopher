@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 20:16:37 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/13 09:05:27 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/15 22:19:52 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,20 @@ static bool	forks_attribution(t_shared *share, int max)
 	i = 0;
 	share->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
 	if (!share->fork_arr)
-		return (false);
+		return (mod_perror(EALLOC), false);
 	while (i < max)
 	{
 		pthread_mutex_init(&share->fork_arr[i], NULL);
-		share->philo[i].fork_r = &share->fork_arr[i];
-		share->philo[i].fork_l = &share->fork_arr[(i + 1) % max];
+		if (i == max - 1)
+		{
+			share->philo[i].fork_l = &share->fork_arr[0];
+			share->philo[i].fork_r = &share->fork_arr[i];
+		}
+		else
+		{
+			share->philo[i].fork_l = &share->fork_arr[i + 1];
+			share->philo[i].fork_r = &share->fork_arr[i];
+		}
 		i++;
 	}
 	return (true);
@@ -44,8 +52,6 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 
 	i = 0;
 	memset(shared, 0, sizeof(t_shared));
-	if (argc != 5 && argc != 6)
-		return (false);
 	while (i < argc - 1)
 	{
 		if (string_isdigit(argv[i + 1]) || check_overflow(argv[i + 1]))
