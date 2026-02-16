@@ -12,26 +12,26 @@
 
 #include "incs/philosophers.h"
 
-static bool	forks_attribution(t_shared *share, int max)
+static bool	forks_attribution(t_shared *shared, int max)
 {
 	int	i;
 
 	i = 0;
-	share->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
-	if (!share->fork_arr)
+	shared->fork_arr = ft_calloc(max, sizeof(pthread_mutex_t));
+	if (!shared->fork_arr)
 		return (mod_perror(EALLOC), false);
 	while (i < max)
 	{
-		pthread_mutex_init(&share->fork_arr[i], NULL);
+		pthread_mutex_init(&shared->fork_arr[i], NULL);
 		if (i == max - 1)
 		{
-			share->philo[i].fork_l = &share->fork_arr[0];
-			share->philo[i].fork_r = &share->fork_arr[i];
+			shared->philo[i].fork_l = &shared->fork_arr[0];
+			shared->philo[i].fork_r = &shared->fork_arr[i];
 		}
 		else
 		{
-			share->philo[i].fork_l = &share->fork_arr[i + 1];
-			share->philo[i].fork_r = &share->fork_arr[i];
+			shared->philo[i].fork_l = &shared->fork_arr[i + 1];
+			shared->philo[i].fork_r = &shared->fork_arr[i];
 		}
 		i++;
 	}

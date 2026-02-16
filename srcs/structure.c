@@ -28,36 +28,36 @@ bool	init_data(t_data **data, int argc, char **argv)
 	return (true);
 }
 
-void	init_philo(t_shared *share, int iter)
+void	init_philo(t_shared *shared, int iter)
 {
-	memset(&share->philo[iter], 0, sizeof(t_philo));
-	pthread_mutex_init(&share->philo[iter].info, NULL);
-	share->philo[iter].mtx_status_info = true;
-	share->philo[iter].stdout_lock = &share->stdout_lock;
-	share->philo[iter].dead_status = &share->dead_status;
-	share->philo[iter].dead_lock = &share->dead_lock;
-	share->philo[iter].shut_up_lock = &share->shut_up_lock;
-	share->philo[iter].shut_up = &share->shut_up;
-	share->philo[iter].nb_max = &share->data->nb_max;
-	share->philo[iter].time_to_die = &share->data->time_to_die;
-	share->philo[iter].time_to_eat = &share->data->time_to_eat;
-	share->philo[iter].time_to_sleep = &share->data->time_to_sleep;
-	share->philo[iter].must_eat = &share->data->must_eat;
+	memset(&shared->philo[iter], 0, sizeof(t_philo));
+	pthread_mutex_init(&shared->philo[iter].info, NULL);
+	shared->philo[iter].mtx_status_info = true;
+	shared->philo[iter].stdout_lock = &shared->stdout_lock;
+	shared->philo[iter].dead_status = &shared->dead_status;
+	shared->philo[iter].dead_lock = &shared->dead_lock;
+	shared->philo[iter].shut_up_lock = &shared->shut_up_lock;
+	shared->philo[iter].shut_up = &shared->shut_up;
+	shared->philo[iter].nb_max = &shared->data->nb_max;
+	shared->philo[iter].time_to_die = &shared->data->time_to_die;
+	shared->philo[iter].time_to_eat = &shared->data->time_to_eat;
+	shared->philo[iter].time_to_sleep = &shared->data->time_to_sleep;
+	shared->philo[iter].must_eat = &shared->data->must_eat;
 }
 
-bool	init_shared(t_shared *share, int nb_max_philo, int argc, char **argv)
+bool	init_shared(t_shared *shared, int nb_max_philo, int argc, char **argv)
 {
 	int	i;
 
 	i = 0;
-	if (!init_data(&share->data, argc, argv))
-		return (false);
-	share->philo = ft_calloc(nb_max_philo, sizeof(t_philo));
-	if (!share->philo)
-		return (mod_perror(EALLOC));
+	if (!init_data(&shared->data, argc, argv))
+		return (mod_perror(EALLOC), false);
+	shared->philo = ft_calloc(nb_max_philo, sizeof(t_philo));
+	if (!shared->philo)
+		return (mod_perror(EALLOC), false);
 	while (i < nb_max_philo)
 	{
-		init_philo(share, i);
+		init_philo(shared, i);
 		i++;
 	}
 	return (true);

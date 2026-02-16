@@ -126,9 +126,9 @@ bool				philo_eat(t_philo *philo);
 void				*reaper(void *ptr_shared);
 
 // --- structure.c ---
-bool				init_shared(t_shared *share, int nb_max_philo, int argc,
+bool				init_shared(t_shared *shared, int nb_max_philo, int argc,
 						char **argv);
-void				init_philo(t_shared *share, int iter);
+void				init_philo(t_shared *shared, int iter);
 bool				init_data(t_data **data, int argc, char **argv);
 
 // --- clean.c ---

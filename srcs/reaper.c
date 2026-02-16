@@ -22,53 +22,53 @@ static void	is_dead(t_philo philo)
 	pthread_mutex_unlock(&*philo.dead_lock);
 }
 
-static bool	check_must_eat(t_shared *share)
+static bool	check_must_eat(t_shared *shared)
 {
 	int32_t	i;
 	int32_t	counter;
 
 	i = 0;
 	counter = 0;
-	if (share->data->must_eat != -1 && !share->dead_status)
+	if (shared->data->must_eat != -1 && !shared->dead_status)
 	{
-		while (i < share->data->nb_max)
+		while (i < shared->data->nb_max)
 		{
-			pthread_mutex_lock(&share->philo[i].info);
-			if (share->philo[i].meal_eated >= share->data->must_eat)
+			pthread_mutex_lock(&shared->philo[i].info);
+			if (shared->philo[i].meal_eated >= shared->data->must_eat)
 				counter++;
-			pthread_mutex_unlock(&share->philo[i].info);
+			pthread_mutex_unlock(&shared->philo[i].info);
 			i++;
 		}
-		if (counter == share->data->nb_max)
-			return (is_dead(share->philo[0]), false);
+		if (counter == shared->data->nb_max)
+			return (is_dead(shared->philo[0]), false);
 	}
 	return (true);
 }
 
-static bool	check_ttd(t_shared *share)
+static bool	check_ttd(t_shared *shared)
 {
 	int32_t	i;
 
 	i = 0;
-	while (i < share->data->nb_max)
+	while (i < shared->data->nb_max)
 	{
-		pthread_mutex_lock(&share->philo[i].info);
-		if (share->philo[i].since_meal == 0)
+		pthread_mutex_lock(&shared->philo[i].info);
+		if (shared->philo[i].since_meal == 0)
 		{
-			pthread_mutex_unlock(&share->philo[i].info);
+			pthread_mutex_unlock(&shared->philo[i].info);
 			i++;
 			continue ;
 		}
 		if (get_mstime()
-			- share->philo[i].since_meal >= share->data->time_to_die)
+			- shared->philo[i].since_meal >= shared->data->time_to_die)
 		{
-			is_dead(share->philo[i]);
-			printf("%d %d died\n", get_mstime() - share->philo[i].start_time,
-				share->philo[i].number);
-			pthread_mutex_unlock(&share->philo[i].info);
+			is_dead(shared->philo[i]);
+			printf("%d %d died\n", get_mstime() - shared->philo[i].start_time,
+				shared->philo[i].number);
+			pthread_mutex_unlock(&shared->philo[i].info);
 			return (false);
 		}
-		pthread_mutex_unlock(&share->philo[i].info);
+		pthread_mutex_unlock(&shared->philo[i].info);
 		i++;
 	}
 	return (true);
@@ -76,15 +76,15 @@ static bool	check_ttd(t_shared *share)
 
 void	*reaper(void *ptr_share)
 {
-	t_shared	*share;
+	t_shared	*shared;
 
-	share = (t_shared *)ptr_share;
+	shared = (t_shared *)ptr_share;
 	usleep(500);
-	while (!share->dead_status)
+	while (!shared->dead_status)
 	{
-		if (!check_must_eat(share))
+		if (!check_must_eat(shared))
 			break ;
-		if (!check_ttd(share))
+		if (!check_ttd(shared))
 			break ;
 		usleep(500);
 	}

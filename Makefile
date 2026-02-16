@@ -21,7 +21,6 @@ SRC_DIR	=	srcs
 CSRC	=	$(SRC_DIR)/lib.c\
 			$(SRC_DIR)/main.c\
 			$(SRC_DIR)/reaper.c\
-			$(SRC_DIR)/exit.c\
 			$(SRC_DIR)/parsing.c\
 			$(SRC_DIR)/threading.c\
 			$(SRC_DIR)/structure.c\

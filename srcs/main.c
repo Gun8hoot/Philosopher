@@ -21,7 +21,7 @@ static bool	thread_creation(t_shared *shared)
 
 	i = 0;
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
-		return (false);
+		return (mod_perror(ETHREAD), false);
 	shared->reaper_created = true;
 	start_time = get_mstime();
 	while (i < shared->data->nb_max)
@@ -32,10 +32,7 @@ static bool	thread_creation(t_shared *shared)
 		pthread_mutex_unlock(&shared->philo[i].info);
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
-		{
-			failed_exit(shared, i);
 			return (mod_perror(ETHREAD), false);
-		}
 		shared->philo[i].created = true;
 		i++;
 	}

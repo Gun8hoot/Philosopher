@@ -95,4 +95,3 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (arr);
 }
 
-// int main(void)
