@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:23:29 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/13 09:06:57 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/17 08:07:10 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 static bool	choose_fork(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
-	*first = philo->fork_l;
-	*second = philo->fork_r;
 	if (*first > *second)
 	{
 		*first = philo->fork_r;
 		*second = philo->fork_l;
 	}
+	else
+	{
+		*first = philo->fork_l;
+		*second = philo->fork_r;
+	}
 	pthread_mutex_lock(*first);
 	safe_print(philo, "has taken a fork", philo->number);
 	if (check_die(philo))
-	{
-		pthread_mutex_unlock(*first);
-		return (false);
-	}
+		return (pthread_mutex_unlock(*first), false);
 	pthread_mutex_lock(*second);
 	safe_print(philo, "has taken a fork", philo->number);
 	if (check_die(philo))

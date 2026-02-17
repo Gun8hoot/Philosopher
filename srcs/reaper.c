@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:59:21 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/13 09:10:06 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/02/17 07:56:51 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	*reaper(void *ptr_share)
 			break ;
 		if (!check_ttd(shared))
 			break ;
-		usleep(500);
+		usleep(1000);
 	}
 	return (NULL);
 }
