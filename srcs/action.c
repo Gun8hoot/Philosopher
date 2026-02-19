@@ -15,15 +15,12 @@
 static bool	choose_fork(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
+	*first = philo->fork_l;
+	*second = philo->fork_r;
 	if (*first > *second)
 	{
 		*first = philo->fork_r;
 		*second = philo->fork_l;
-	}
-	else
-	{
-		*first = philo->fork_l;
-		*second = philo->fork_r;
 	}
 	pthread_mutex_lock(*first);
 	safe_print(philo, "has taken a fork", philo->number);

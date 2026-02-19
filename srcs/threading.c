@@ -19,7 +19,9 @@ static void	case_one(t_philo *philo)
 	safe_print(philo, "has taken a fork", philo->number);
 	usleep(*philo->time_to_die * 1000);
 	safe_print(philo, "died", philo->number);
+	pthread_mutex_lock(&*philo->dead_lock);
 	*philo->dead_status = true;
+	pthread_mutex_unlock(&*philo->dead_lock);
 }
 
 bool	check_die(t_philo *philo)

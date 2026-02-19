@@ -29,8 +29,10 @@ static bool	check_must_eat(t_shared *shared)
 
 	i = 0;
 	counter = 0;
+	pthread_mutex_lock(&shared->dead_lock);
 	if (shared->data->must_eat != -1 && !shared->dead_status)
 	{
+		pthread_mutex_unlock(&shared->dead_lock);
 		while (i < shared->data->nb_max)
 		{
 			pthread_mutex_lock(&shared->philo[i].info);
@@ -80,8 +82,10 @@ void	*reaper(void *ptr_share)
 
 	shared = (t_shared *)ptr_share;
 	usleep(500);
-	while (!shared->dead_status)
+	while (1)
 	{
+		if (check_die(&shared->philo[0]))
+			break ;
 		if (!check_must_eat(shared))
 			break ;
 		if (!check_ttd(shared))
