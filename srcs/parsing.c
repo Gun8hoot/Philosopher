@@ -38,7 +38,7 @@ static bool	forks_attribution(t_shared *shared, int max)
 	return (true);
 }
 
-static bool check_number_philosophers(int i, char **argv)
+static bool	check_number_philosophers(int i, char **argv)
 {
 	if (i == 1)
 	{
