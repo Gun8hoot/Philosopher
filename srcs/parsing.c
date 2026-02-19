@@ -38,6 +38,16 @@ static bool	forks_attribution(t_shared *shared, int max)
 	return (true);
 }
 
+static bool check_number_philosophers(int i, char **argv)
+{
+	if (i == 1)
+	{
+		if (ft_atoi(argv[i]) == 0)
+			return (mod_perror(EZERO), false);
+	}
+	return (true);
+}
+
 static bool	check_overflow(char *number)
 {
 	if (ft_strlen(number) > 10 || (ft_atol(number) < 0
@@ -55,6 +65,8 @@ bool	parsing(int argc, char **argv, t_shared *shared)
 	while (i < argc - 1)
 	{
 		if (string_isdigit(argv[i + 1]) || check_overflow(argv[i + 1]))
+			return (false);
+		if (!check_number_philosophers(i + 1, argv))
 			return (false);
 		i++;
 	}

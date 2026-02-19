@@ -30,6 +30,7 @@
 # define EALNUM "\e[0;31m[!] Non-number character detected\e[0m"
 # define EARGNB "\e[0;31m[!] Not enought arguments\e[0m"
 # define EMTX "\e[0;31m[!] Failed to initialize a mutex\e[0m"
+# define EZERO "\e[0;31m[!] You need to put at least one philosophers\e[0m"
 
 // --- STRUCTURE ---
 

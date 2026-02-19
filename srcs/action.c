@@ -67,7 +67,7 @@ bool	philo_sleeping(t_philo *philo)
 
 bool	philo_thinking(t_philo *philo)
 {
-	(void)philo;
 	safe_print(philo, "is thinking", philo->number);
+	better_usleep(philo, 1);
 	return (true);
 }
