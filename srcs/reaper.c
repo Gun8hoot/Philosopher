@@ -12,7 +12,7 @@
 
 #include "incs/philosophers.h"
 
-static void	is_dead(t_philo philo)
+static inline void	is_dead(t_philo philo)
 {
 	pthread_mutex_lock(&*philo.stdout_lock);
 	*philo.shut_up = true;

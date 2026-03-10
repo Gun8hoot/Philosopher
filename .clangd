@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -I/home/gun8hoot/Documents/Philosopher
+    - -xc

@@ -33,6 +33,7 @@ void	init_philo(t_shared *shared, int iter)
 	memset(&shared->philo[iter], 0, sizeof(t_philo));
 	pthread_mutex_init(&shared->philo[iter].info, NULL);
 	shared->philo[iter].mtx_status_info = true;
+	shared->philo[iter].data = &shared->data;
 	shared->philo[iter].stdout_lock = &shared->stdout_lock;
 	shared->philo[iter].dead_status = &shared->dead_status;
 	shared->philo[iter].dead_lock = &shared->dead_lock;

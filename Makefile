@@ -10,10 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	philosophers
+NAME	=	philo
 
 CC		=	cc
-#CFLAGS	=	-I. -Wall -Wextra -Werror -O2
 CFLAGS	=	-I. -Wall -Wextra -Werror -g3 -c
 
 SRC_DIR	=	srcs
@@ -33,7 +32,7 @@ OBJS	=	$(CSRC:%.c=%.o)
 	$(CC) $(CFLAGS) $< -o $@
 
 $(NAME): $(OBJS)
-	$(CC)  $(OBJS) -o $@
+	$(CC) $(OBJS) -o $@
 
 clean:
 	rm -f srcs/*.o

@@ -16,19 +16,17 @@
 
 static bool	thread_creation(t_shared *shared)
 {
-	int32_t	start_time;
 	int32_t	i;
 
 	i = 0;
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
 		return (mod_perror(ETHREAD), false);
 	shared->reaper_created = true;
-	start_time = get_mstime();
 	while (i < shared->data->nb_max)
 	{
 		pthread_mutex_lock(&shared->philo[i].info);
 		shared->philo[i].number = i + 1;
-		shared->philo[i].start_time = start_time;
+		shared->philo[i].start_time = get_mstime();
 		pthread_mutex_unlock(&shared->philo[i].info);
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))

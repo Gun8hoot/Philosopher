@@ -46,7 +46,7 @@ typedef struct s_data
 
 typedef struct s_philo
 {
-	// SHARED
+	/* - - - SHARED W OTHER - - - */
 	pthread_mutex_t	info;
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*shut_up_lock;
@@ -59,12 +59,13 @@ typedef struct s_philo
 	int32_t			*time_to_sleep;
 	int32_t			*must_eat;
 	int32_t			*nb_max;
+	t_data			**data;
 
 	bool			*shut_up;
 	bool			mtx_status_info;
 	bool			*dead_status;
 
-	// SELF
+	/* - - - SELF - - - */
 	pthread_t		id;
 	pthread_t		reaper_id;
 	int32_t			number;
