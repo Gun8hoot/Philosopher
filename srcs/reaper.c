@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:59:21 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/17 07:56:51 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/03/17 08:21:51 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static bool	check_must_eat(t_shared *shared)
 		if (counter == shared->data->nb_max)
 			return (is_dead(shared->philo[0]), false);
 	}
+	else
+		pthread_mutex_unlock(&shared->dead_lock);
 	return (true);
 }
 
