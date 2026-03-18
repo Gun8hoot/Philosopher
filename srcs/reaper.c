@@ -6,13 +6,13 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:59:21 by nclavel           #+#    #+#             */
-/*   Updated: 2026/03/17 09:06:10 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/03/18 11:36:32 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "incs/philosophers.h"
 
-static inline void	is_dead(t_philo philo)
+static void	is_dead(t_philo philo)
 {
 	pthread_mutex_lock(&*philo.stdout_lock);
 	*philo.shut_up = true;
@@ -25,10 +25,10 @@ static inline void	is_dead(t_philo philo)
 static bool	check_must_eat(t_shared *shared)
 {
 	int32_t	i;
-	int32_t	counter;
+	int32_t	count;
 
 	i = 0;
-	counter = 0;
+	count = 0;
 	pthread_mutex_lock(&shared->dead_lock);
 	if (shared->data->must_eat != -1 && !shared->dead_status)
 	{
@@ -37,11 +37,11 @@ static bool	check_must_eat(t_shared *shared)
 		{
 			pthread_mutex_lock(&shared->philo[i].info);
 			if (shared->philo[i].meal_eated >= shared->data->must_eat)
-				counter++;
+				count++;
 			pthread_mutex_unlock(&shared->philo[i].info);
 			i++;
 		}
-		if (counter == shared->data->nb_max)
+		if (count == shared->data->nb_max)
 			return (is_dead(shared->philo[0]), false);
 	}
 	else

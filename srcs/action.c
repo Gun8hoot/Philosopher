@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:23:29 by nclavel           #+#    #+#             */
-/*   Updated: 2026/03/17 08:12:46 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/03/18 11:33:02 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ bool	philo_eat(t_philo *philo)
 
 	if (!choose_fork(philo, &first, &second))
 		return (false);
-	safe_print(philo, "is eating", philo->number);
-	better_usleep(philo, *philo->time_to_eat);
-	pthread_mutex_unlock(&*philo->fork_l);
-	pthread_mutex_unlock(&*philo->fork_r);
 	pthread_mutex_lock(&philo->info);
 	philo->since_meal = get_mstime();
 	philo->meal_eated++;
 	pthread_mutex_unlock(&philo->info);
+	safe_print(philo, "is eating", philo->number);
+	better_usleep(philo, *philo->time_to_eat);
+	pthread_mutex_unlock(&*philo->fork_l);
+	pthread_mutex_unlock(&*philo->fork_r);
 	return (true);
 }
 

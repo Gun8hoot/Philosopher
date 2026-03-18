@@ -6,7 +6,7 @@
 /*   By: nclavel <nclavel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:53:06 by nclavel           #+#    #+#             */
-/*   Updated: 2026/02/13 09:16:03 by nclavel          ###   ########.fr       */
+/*   Updated: 2026/03/18 11:44:16 by nclavel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static bool	thread_creation(t_shared *shared)
 	i = 0;
 	if (pthread_create(&shared->id_reaper, NULL, &reaper, shared))
 		return (mod_perror(ETHREAD), false);
+	pthread_mutex_lock(&shared->dead_lock);
 	shared->reaper_created = true;
+	pthread_mutex_unlock(&shared->dead_lock);
 	while (i < shared->data->nb_max)
 	{
 		pthread_mutex_lock(&shared->philo[i].info);
@@ -31,7 +33,9 @@ static bool	thread_creation(t_shared *shared)
 		if (pthread_create(&shared->philo[i].id, NULL, &philosophers,
 				&shared->philo[i]))
 			return (mod_perror(ETHREAD), false);
+		pthread_mutex_lock(&shared->philo[i].info);
 		shared->philo[i].created = true;
+		pthread_mutex_unlock(&shared->philo[i].info);
 		i++;
 	}
 	return (true);
@@ -58,6 +62,7 @@ int	main(int argc, char **argv)
 		return (mod_perror(EARGNB));
 	if (!parsing(argc, argv, &shared))
 		return (ft_exit(&shared), EXIT_FAILURE);
+	
 	if (!init(&shared))
 		return (ft_exit(&shared), EXIT_FAILURE);
 	ft_exit(&shared);
